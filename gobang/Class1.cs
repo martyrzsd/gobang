@@ -7,16 +7,36 @@ using System.Threading.Tasks;
 
 namespace gobang
 {
-    class Algorithm
+    class Control
     {
-        public Algorithm()
+        public Control()
         {
 
         }//not finished
-        public int winner()
+        public int Winner()
         {
             return 1;
         }//not finished
+        public void Recover()
+        {
+
+        }//not finished
+        public void Practice()
+        {
+
+        }//not finished
+        public void Put()
+        {
+            if (Check())
+            {
+
+            }
+        }//consider write this as methods in control. The method can recieve two paramentors of Chess(black or white) and a Point(place to put the chess), meaning put the white(black) chess on to the point.
+        public bool Check()
+        {
+            return true;
+        }//finished in the class chess, but now i want to put this into the class control. With two paramentor 
+        //chess balck and chess white and point p. And the method Put will use this method.
     }
 
     class ChessBoard
@@ -98,7 +118,31 @@ namespace gobang
             }
             return result;
         }//use the distance to judge, need to run twice to check both white and black.
-
     }
 
+    class Game
+    {
+        public Game(Point vertex,int sizePerLine)
+        {
+            black = new Chess(vertex, sizePerLine);
+            white = new Chess(vertex, sizePerLine);
+            board = new Chess(vertex, sizePerLine);
+            control = new Control();
+        }
+        public Chess black { get; set; }
+        public Chess white { get; set; }
+        public ChessBoard board { get; set; }
+        public Control control { get; set; }
+    }//examples for a game
+
+    class Attemptation:Game
+    {
+        public Attemptation(Point vertex, int sizePerLine):base(vertex,sizePerLine)
+        {
+            black = new Chess(vertex, sizePerLine);
+            white = new Chess(vertex, sizePerLine);
+            board = new Chess(vertex, sizePerLine);
+            control = new Control();
+        }
+    }// used in attemptation
 }

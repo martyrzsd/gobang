@@ -15,6 +15,8 @@ namespace gobang
         public Form1()
         {
             InitializeComponent();
+            Width = 1000;
+            Height = 800;
         }
        
     }
