@@ -13,7 +13,7 @@ namespace gobang
         {
 
         }//not finished
-        public int Winner()
+        public int Winner(Game game)
         {
             return 1;
         }//not finished
@@ -151,6 +151,7 @@ namespace gobang
             control = new Control();
             paint = new Paint(vertex, sizePerLine);
         }//one game shall have a black white chess and a chessboard, as well as two controller for logic and painting.
+        public int currentStep { get; set; }
         public Chess black { get; set; }
         public Chess white { get; set; }
         public ChessBoard board { get; set; }
