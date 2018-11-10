@@ -39,6 +39,22 @@ namespace gobang
         //chess balck and chess white and point p. And the method Put will use this method.
     }
 
+    class Paint
+    {
+        public Paint(Point vertex,int sizePerLine)
+        {
+            Drawboard(vertex, sizePerLine);
+        }//not finished
+        public void Drawboard(Point vertex, int sizePerLine)
+        {
+
+        }//not finished
+        public void Drawchess()
+        {
+
+        }//notfinished
+    }
+
     class ChessBoard
     {
         public ChessBoard(Point vertex,int sizePerLine)
@@ -73,7 +89,7 @@ namespace gobang
                 }
             }//all content initialized to -1
             point = new Point[181];//initialize the point array
-        }
+        }//not finished
         public int step = new int();//start at 0 to note down the step untill now, used in the recovery.
         public Point[] point
         {
@@ -128,11 +144,13 @@ namespace gobang
             white = new Chess(vertex, sizePerLine);
             board = new Chess(vertex, sizePerLine);
             control = new Control();
-        }
+            paint = new Paint(vertex,sizePerLine);
+        }//one game shall have a black white chess and a chessboard, as well as two controller for logic and painting.
         public Chess black { get; set; }
         public Chess white { get; set; }
         public ChessBoard board { get; set; }
         public Control control { get; set; }
+        public Paint paint { get; set; }
     }//examples for a game
 
     class Attemptation:Game

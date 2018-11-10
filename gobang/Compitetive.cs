@@ -10,15 +10,11 @@ using System.Windows.Forms;
 
 namespace gobang
 {
-    public partial class Form1 : Form
+    public partial class Compitetive : Form
     {
-        public Form1()
+        public Compitetive()
         {
             InitializeComponent();
-            Width = 1000;
-            Height = 800;
         }
-       
     }
-    
 }
