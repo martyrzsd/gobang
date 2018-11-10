@@ -14,20 +14,21 @@ namespace gobang
     {
         public DualPlayer()
         {
+            this.Show();
             InitializeComponent();
             Height = 1000;
             Width = 800;
-        }
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void DualPlayer_Load(object sender, EventArgs e)
-        {
             int sizePerLine = 25;//later may get this size changable
-            Point vertex = new Point();
-            Game a = new Game(vertex, sizePerLine);
+            Point vertex = new Point(50, 50);
+            Game a = new Game(vertex, sizePerLine, this);
+            a.Paint.Drawboard();
+        }
+        public int SizePerLine { get; set; }
+        public Game Dual { get; set; }
+        public Point Vertex { get; set; }
+        public void DualPlayer_Click(object sender, EventArgs e)
+        {
+            Dual.Control.Put(MousePosition, Dual);
         }
     }
 }

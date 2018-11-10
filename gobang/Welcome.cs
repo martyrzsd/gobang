@@ -20,16 +20,19 @@ namespace gobang
         private void dualPlayer_Click(object sender, EventArgs e)
         {
             new DualPlayer();
+            this.Hide();
         }
 
         private void competitve_Click(object sender, EventArgs e)
         {
             new Compitetive();
+            this.Hide();
         }
 
         private void singlePlayer_Click(object sender, EventArgs e)
         {
             new SinglePlayer();
+            this.Hide();
         }
     }
     

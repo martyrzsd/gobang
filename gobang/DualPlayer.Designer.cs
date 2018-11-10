@@ -34,10 +34,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.BurlyWood;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "DualPlayer";
             this.Text = "Form2";
-            this.Load += new System.EventHandler(this.DualPlayer_Load);
+            this.Click += new System.EventHandler(this.DualPlayer_Click);
             this.ResumeLayout(false);
 
         }
