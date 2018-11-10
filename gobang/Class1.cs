@@ -32,16 +32,31 @@ namespace gobang
 
             }
         }//consider write this as methods in control. The method can recieve two paramentors of Chess(black or white) and a Point(place to put the chess), meaning put the white(black) chess on to the point.
-        public bool Check()
+        public bool Check(Point toput, Chess black, Chess white)
         {
-            return true;
+            bool result = true;
+            foreach (Point item in black.point)
+            {
+                if (item.X - toput.X <= black.SizePerLine / 2 & item.Y - toput.Y <= black.SizePerLine)
+                {
+                    result = false;
+                }
+            }
+            foreach (Point item in white.point)
+            {
+                if (item.X - toput.X <= white.SizePerLine / 2 & item.Y - toput.Y <= white.SizePerLine)
+                {
+                    result = false;
+                }
+            }
+            return result;
         }//finished in the class chess, but now i want to put this into the class control. With two paramentor 
         //chess balck and chess white and point p. And the method Put will use this method.
     }
 
     class Paint
     {
-        public Paint(Point vertex,int sizePerLine)
+        public Paint(Point vertex, int sizePerLine)
         {
             Drawboard(vertex, sizePerLine);
         }//not finished
@@ -57,7 +72,7 @@ namespace gobang
 
     class ChessBoard
     {
-        public ChessBoard(Point vertex,int sizePerLine)
+        public ChessBoard(Point vertex, int sizePerLine)
         {
             SizePerLine = sizePerLine;
             xBoundary = new int[20];
@@ -75,12 +90,12 @@ namespace gobang
         public int[] yBoundary { get; set; }//position of each horizon line
     }
 
-    class Chess:ChessBoard
+    class Chess : ChessBoard
     {
-        public Chess(Point vertex,int sizePerLine):base(vertex,sizePerLine)
+        public Chess(Point vertex, int sizePerLine) : base(vertex, sizePerLine)
         {
             step = 0;//this is used in the recovering game.
-            matrix = new int[19,19];//size of matrix
+            matrix = new int[19, 19];//size of matrix
             for (int i = 0; i < 19; i++)
             {
                 for (int j = 0; j < 19; j++)
@@ -91,18 +106,8 @@ namespace gobang
             point = new Point[181];//initialize the point array
         }//not finished
         public int step = new int();//start at 0 to note down the step untill now, used in the recovery.
-        public Point[] point
-        {
-            get
-            {
-                return this.point;
-            }
-            set
-            {
-                this.point = value;
-            }
-        }//store the cordinate center of cross that has a chess on it.
-        public int[,] matrix{ get; set; }//the content in this matrix show the order of the chess put, as well as the order of point.
+        public Point[] point { get; set; }//store the cordinate center of cross that has a chess on it.
+        public int[,] matrix { get; set; }//the content in this matrix show the order of the chess put, as well as the order of point.
         public void Chessput(Point xy)
         {
             for (int i = 0; i < 19; i++)
@@ -110,9 +115,9 @@ namespace gobang
                 for (int j = 0; j < 19; j++)
                 {
                     if (
-                        (xBoundary[j]-SizePerLine)<xy.X&xy.X<=(xBoundary[j+1]-SizePerLine)
+                        (xBoundary[j] - SizePerLine) < xy.X & xy.X <= (xBoundary[j + 1] - SizePerLine)
                         &&
-                        (yBoundary[i]-SizePerLine)<xy.Y&xy.Y<=(yBoundary[i+1]-SizePerLine)
+                        (yBoundary[i] - SizePerLine) < xy.Y & xy.Y <= (yBoundary[i + 1] - SizePerLine)
                         )
                     {
                         matrix[i, j] = step;
@@ -127,7 +132,7 @@ namespace gobang
             bool result = true;
             foreach (Point item in point)
             {
-                if (item.X-toput.X<=SizePerLine/2&item.Y-toput.Y<=SizePerLine)
+                if (item.X - toput.X <= SizePerLine / 2 & item.Y - toput.Y <= SizePerLine)
                 {
                     result = false;
                 }
@@ -138,13 +143,13 @@ namespace gobang
 
     class Game
     {
-        public Game(Point vertex,int sizePerLine)
+        public Game(Point vertex, int sizePerLine)
         {
             black = new Chess(vertex, sizePerLine);
             white = new Chess(vertex, sizePerLine);
             board = new Chess(vertex, sizePerLine);
             control = new Control();
-            paint = new Paint(vertex,sizePerLine);
+            paint = new Paint(vertex, sizePerLine);
         }//one game shall have a black white chess and a chessboard, as well as two controller for logic and painting.
         public Chess black { get; set; }
         public Chess white { get; set; }
@@ -153,9 +158,9 @@ namespace gobang
         public Paint paint { get; set; }
     }//examples for a game
 
-    class Attemptation:Game
+    class Attemptation : Game
     {
-        public Attemptation(Point vertex, int sizePerLine):base(vertex,sizePerLine)
+        public Attemptation(Point vertex, int sizePerLine) : base(vertex, sizePerLine)
         {
             black = new Chess(vertex, sizePerLine);
             white = new Chess(vertex, sizePerLine);
