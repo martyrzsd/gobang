@@ -39,6 +39,7 @@
             this.Name = "DualPlayer";
             this.Text = "Form2";
             this.Click += new System.EventHandler(this.DualPlayer_Click);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DualPlayer_MouseDown);
             this.ResumeLayout(false);
 
         }

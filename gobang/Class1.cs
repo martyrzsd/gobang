@@ -12,8 +12,9 @@ namespace gobang
     {
         public Control(Game game)
         {
-
+            GameToControl = game;
         }//not finished
+        public Game GameToControl { get; set; }
         public int Winner(Game game)
         {
             return 1;
@@ -26,31 +27,39 @@ namespace gobang
         {
 
         }//not finished
-        public void Put(Point toput,Game game)
+        public void Put(Point toput)
         {
             
-            if (Check(toput,game.Black,game.White))
+            if (Check(toput))
             {
-                if (game.CurrentStep%2==0)
+                if (GameToControl.CurrentStep%2!=0)
                 {
-                    game.Black.Chessput(toput);
+                    GameToControl.Black.Chessput(toput);
+                    GameToControl.Paint.Drawchess(GameToControl.Black);
+                    GameToControl.CurrentStep++;
+                }
+                else
+                {
+                    GameToControl.White.Chessput(toput);
+                    GameToControl.Paint.Drawchess(GameToControl.White);
+                    GameToControl.CurrentStep++;
                 }
             }
-            
         }//consider write this as methods in control. The method can recieve two paramentors of Chess(black or white) and a ChessLocation(place to put the chess), meaning put the white(black) chess on to the point.
-        public bool Check(Point toput, Chess black, Chess white)
+        public bool Check(Point toput)
         {
             bool result = true;
-            foreach (Point item in black.ChessLocation)
+            bool test = true;
+            foreach (Point item in GameToControl.Black.ChessLocation)
             {
-                if (item.X - toput.X <= black.SizePerLine / 2 & item.Y - toput.Y <= black.SizePerLine)
+                if (Math.Abs(item.X - toput.X) <= GameToControl.Black.SizePerLine / 2 &Math.Abs(item.Y - toput.Y) <= GameToControl.Black.SizePerLine)
                 {
                     result = false;
                 }
             }
-            foreach (Point item in white.ChessLocation)
+            foreach (Point item in GameToControl.White.ChessLocation)
             {
-                if (item.X - toput.X <= white.SizePerLine / 2 & item.Y - toput.Y <= white.SizePerLine)
+                if (Math.Abs(item.X - toput.X) <= GameToControl.White.SizePerLine / 2 &Math.Abs(item.Y - toput.Y )<= GameToControl.White.SizePerLine)
                 {
                     result = false;
                 }
@@ -65,7 +74,7 @@ namespace gobang
         public Paint(Game game)
         {
             GameToPaint = game;
-            Graphics g = GameToPaint.CurrentForm.CreateGraphics();
+            g = GameToPaint.CurrentForm.CreateGraphics();
         }//not finished
         public Game GameToPaint { get; set; }
         public Graphics g { get; set; }
@@ -81,9 +90,22 @@ namespace gobang
                 g.DrawLine(Lines, GameToPaint.Board.XBoundary[0], item, GameToPaint.Board.XBoundary[19], item);
             }
         }//not finished
-        public void Drawchess()
+        public void Drawchess(Chess chess)
         {
-
+            if (chess.ColorOfChess)
+            {
+                for (int i = 0; i < chess.step; i++)
+                {
+                    g.FillEllipse(new SolidBrush(Color.Black), chess.ChessLocation[i].X-10, chess.ChessLocation[i].Y-10, 20, 20);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < chess.step; i++)
+                {
+                    g.FillEllipse(new SolidBrush(Color.White), chess.ChessLocation[i].X-10, chess.ChessLocation[i].Y-10, 20, 20);
+                }
+            }
         }//notfinished
     }
 
@@ -110,8 +132,20 @@ namespace gobang
 
     public class Chess : ChessBoard
     {
-        public Chess(Point vertex, int _sizePerLine) : base(vertex, _sizePerLine)
+        public Chess(Point vertex, int _sizePerLine,bool _colorOfChess) : base(vertex, _sizePerLine)
         {
+            SizePerLine = _sizePerLine;
+            XBoundary = new int[20];
+            YBoundary = new int[20];
+            for (int i = 0; i < 20; i++)
+            {
+                XBoundary[i] = vertex.X + SizePerLine * i;
+            }
+            for (int i = 0; i < 20; i++)//here the lenth is 20 to satisfy the chessput methods
+            {
+                YBoundary[i] = vertex.Y + SizePerLine * i;
+            }
+            ColorOfChess = _colorOfChess;
             step = 0;//this is used in the recovering game.
             Matrix = new int[19, 19];//size of matrix
             for (int i = 0; i < 19; i++)
@@ -123,19 +157,20 @@ namespace gobang
             }//all content initialized to -1
             ChessLocation = new Point[181];//initialize the point array
         }//not finished
+        public bool ColorOfChess{get;set;}
         public int step = new int();//start at 0 to note down the step untill now, used in the recovery.
         public Point[] ChessLocation { get; set; }//store the cordinate center of cross that has a chess on it.
         public int[,] Matrix { get; set; }//the content in this matrix show the order of the chess put, as well as the order of point.
-        public void Chessput(Point xy)
+        public void Chessput(Point toput)
         {
             for (int i = 0; i < 19; i++)
             {
                 for (int j = 0; j < 19; j++)
                 {
                     if (
-                        (XBoundary[j] - SizePerLine) < xy.X & xy.X <= (XBoundary[j + 1] - SizePerLine)
+                        (XBoundary[j] - SizePerLine) < toput.X & toput.X <= (XBoundary[j + 1] - SizePerLine)
                         &&
-                        (YBoundary[i] - SizePerLine) < xy.Y & xy.Y <= (YBoundary[i + 1] - SizePerLine)
+                        (YBoundary[i] - SizePerLine) < toput.Y & toput.Y <= (YBoundary[i + 1] - SizePerLine)
                         )
                     {
                         Matrix[i, j] = step;
@@ -143,7 +178,7 @@ namespace gobang
                     }
                 }
             }
-            step += 1;
+            step ++;
         }//fill the matrix and point array when put the chess in, do it after you do the checking. Have an imaginary boundary on the right and bottom
         public bool Check(Point toput)
         {
@@ -164,8 +199,8 @@ namespace gobang
         public Game(Point vertex, int _sizePerLine, Form form)
         {
             CurrentForm = form;
-            Black = new Chess(vertex, _sizePerLine);
-            White = new Chess(vertex, _sizePerLine);
+            Black = new Chess(vertex, _sizePerLine, true);
+            White = new Chess(vertex, _sizePerLine,false);
             Board = new ChessBoard(vertex, _sizePerLine);
             Control = new Control(this);
             Paint = new Paint(this);
