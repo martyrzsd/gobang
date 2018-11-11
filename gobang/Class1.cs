@@ -31,8 +31,10 @@ namespace gobang
             
             if (Check(toput,game.Black,game.White))
             {
-
-                game.Paint.Drawchess();
+                if (game.CurrentStep%2==0)
+                {
+                    game.Black.Chessput(toput);
+                }
             }
             
         }//consider write this as methods in control. The method can recieve two paramentors of Chess(black or white) and a ChessLocation(place to put the chess), meaning put the white(black) chess on to the point.
