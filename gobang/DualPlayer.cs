@@ -26,12 +26,8 @@ namespace gobang
         public int SizePerLine { get; set; }
         public Game Dual { get; set; }
         public Point Vertex { get; set; }
-        public void DualPlayer_Click(object sender, EventArgs e)
-        {
-            Dual.Control.Put(MousePosition);
-        }
 
-        private void DualPlayer_MouseDown(object sender, MouseEventArgs e)
+        private void DualPlayer_MouseClick(object sender, MouseEventArgs e)
         {
             Dual.Control.Put(e.Location);
         }

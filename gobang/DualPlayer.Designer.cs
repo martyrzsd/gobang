@@ -38,8 +38,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "DualPlayer";
             this.Text = "Form2";
-            this.Click += new System.EventHandler(this.DualPlayer_Click);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DualPlayer_MouseDown);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DualPlayer_MouseClick);
             this.ResumeLayout(false);
 
         }
