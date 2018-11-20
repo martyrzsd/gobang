@@ -135,7 +135,8 @@ namespace gobang
 
     public class Chess : ChessBoard
     {
-        public Chess(Point vertex, int _sizePerLine, bool _colorOfChess) : base(vertex, _sizePerLine)
+        public Chess(Point vertex, int _sizePerLine, bool _colorOfChess)
+            : base(vertex, _sizePerLine)
         {
             SizePerLine = _sizePerLine;
             XBoundary = new int[20];
