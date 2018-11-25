@@ -16,20 +16,58 @@ namespace gobang
         {
             this.Show();
             InitializeComponent();
-            Height = 1000;
-            Width = 800;
             SizePerLine = 25;//later may get this size changable
             Vertex = new Point(50, 50);
-            Dual = new Game(Vertex, SizePerLine, this);
-            Dual.Paint.Drawboard();
+            Dual = new List<Game>() { new Game(Vertex, SizePerLine, this) };
+            NumbersOfGame = 0;
+            Score = new int[2] { 0, 0 };
         }
         public int SizePerLine { get; set; }
-        public Game Dual { get; set; }
+        public List<Game> Dual { get; set; }
+        public int NumbersOfGame { get; set; }
         public Point Vertex { get; set; }
+        public int[] Score { get; set; }
 
         private void DualPlayer_MouseClick(object sender, MouseEventArgs e)
         {
-            Dual.Control.Put(e.Location);
+            int condition = 1;
+            if (condition != -1)
+            {
+                int ocassion = Dual[NumbersOfGame].Control.Put(e.Location);
+                if (ocassion == 1)
+                {
+                    NumbersOfGame++;
+                    Dual.Add(new Game(Vertex, SizePerLine, this));
+
+                }
+                if (ocassion == -1)
+                {
+                    condition = -1;
+                    //MessageBox.Show({"The Score if "+Score[0].ToString()+" : "+Score[1].ToString(), FinalScore);
+                }
+            }
+        }
+
+        private void dualToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            new DualPlayer();
+        }
+
+        private void competitiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Compitetive();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            NumbersOfGame++;
+            Dual.Add(new Game(Vertex, SizePerLine, this));
+        }
+
+        private void Recover_Click(object sender, EventArgs e)
+        {
+            Dual[NumbersOfGame]
         }
     }
+
 }

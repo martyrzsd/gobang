@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace gobang
 {
@@ -228,11 +229,12 @@ namespace gobang
         {
 
         }//not finished
+        public void Save() { }
         public void Practice()
         {
 
         }//not finished
-        public void Put(Point toput)
+        public int Put(Point toput)
         {
             if (Check(toput))
             {
@@ -242,9 +244,13 @@ namespace gobang
                     GameToControl.Paint.Drawchess(GameToControl.Black);
                     if (Winner())
                     {
-                        if (MessageBox.Show("The black win!Retry?","We have a winner",MessageBoxButtons.YesNo)==DialogResult.Yes)
+                        if(MessageBox.Show("The black win!Retry?", "We have a winner", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
-                            
+                            return 1;
+                        }
+                        else
+                        {
+                            return -1;
                         }
                     }
                 }
@@ -254,16 +260,22 @@ namespace gobang
                     GameToControl.Paint.Drawchess(GameToControl.White);
                     if (Winner())
                     {
-                        if (MessageBox.Show("The white win! Retry?","We have a winner!",MessageBoxButtons.YesNo)==DialogResult.Yes)
+                        if (MessageBox.Show("The white win! Retry?", "We have a winner!", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
-                            
+                            return 1;
+                        }
+                        else
+                        {
+                            return -1;
                         }
                     }
                 }
                 GameToControl.CurrentStep++;
+                return 0;
             }
             else
             {
+                return 0;
             }
         }//consider write this as methods in control. The method can recieve two paramentors of Chess(black or white) and a ChessLocation(place to put the chess), meaning put the white(black) chess on to the point.
         public bool Check(Point toput)
@@ -275,6 +287,10 @@ namespace gobang
                 {
                     result = false;
                 }
+            }
+            if (toput.X<=GameToControl.Board.XBoundary[0]||toput.X>=GameToControl.Board.XBoundary[19]||toput.Y<=GameToControl.Board.YBoundary[0]||toput.Y>=GameToControl.Board.YBoundary[19])
+            {
+                result = false;
             }
             foreach (Point item in GameToControl.White.ChessLocation)
             {
@@ -299,6 +315,8 @@ namespace gobang
         public Graphics g { get; set; }
         public void Drawboard()
         {
+            SolidBrush covering = new SolidBrush(Color.BurlyWood);
+            g.FillRectangle(covering, GameToPaint.Board.XBoundary[0]-GameToPaint.SizePerLine, GameToPaint.Board.YBoundary[0]-GameToPaint.SizePerLine, GameToPaint.SizePerLine*20, GameToPaint.SizePerLine*20);
             Pen Lines = new Pen(Color.Black);
             foreach (int item in GameToPaint.Board.XBoundary)
             {
@@ -308,7 +326,7 @@ namespace gobang
             {
                 g.DrawLine(Lines, GameToPaint.Board.XBoundary[0], item, GameToPaint.Board.XBoundary[19], item);
             }
-        }//not finished
+       }//not finished
         public void Drawchess(Chess chess)
         {
             if (chess.ColorOfChess)
@@ -353,6 +371,7 @@ namespace gobang
         public int SizePerLine { get; set; }// distance between line
         public int[] XBoundary { get; set; }// position of each vertical line
         public int[] YBoundary { get; set; }//position of each horizon line
+        
     }
 
     public class Chess : ChessBoard
@@ -387,15 +406,27 @@ namespace gobang
                 for (int j = 0; j < 19; j++)
                 {
                     Connection[i, j] = new int[] { i, 19, 0, 19, 0, 19, 0, 19 };
-                    Connection[j, i][2] = Connection[i, j][0];
                 }
             }//横向纵向链接数组初始化
             for (int i = 0; i < 19; i++)
             {
                 for (int j = 0; j < 19; j++)
                 {
+                    Connection[j, i][2] = Connection[i, j][0];
+                }
+            }
+            for (int i = 0; i < 19; i++)
+            {
+                for (int j = 0; j < 19; j++)
+                {
                     Connection[i, j][4] = i - j;//对角线上都是0，对角线下都是正的，上面是负的.两个一组，联通组长度加连接性。
-                    Connection[18 - i, 18 - j][6] = i - j;//反对角线的初始化，依旧保持反对角线上面是负的，下面是正的.
+                }
+            }
+            for (int i = 0; i < 19; i++)
+            {
+                for (int j = 0; j < 19; j++)
+                {
+                    Connection[18 - i, 18 - j][6] = i - j;
                 }
             }
             ChessLocation = new Point[181];//initialize the point array
@@ -461,6 +492,7 @@ namespace gobang
             Paint = new Paint(this);
             Vertex = vertex;
             SizePerLine = _sizePerLine;
+            this.Paint.Drawboard();
         }//one game shall have a black white chess and a chessboard, as well as two controller for logic and painting.
         public Form CurrentForm { get; set; }
         public Point Vertex { get; set; }
