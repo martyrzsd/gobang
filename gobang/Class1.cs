@@ -232,7 +232,7 @@ namespace gobang
         {
 
         }//not finished
-        public int Put(Point toput)
+        public void Put(Point toput)
         {
             if (Check(toput))
             {
@@ -242,7 +242,10 @@ namespace gobang
                     GameToControl.Paint.Drawchess(GameToControl.Black);
                     if (Winner())
                     {
-                        return 1;
+                        if (MessageBox.Show("The black win!Retry?","We have a winner",MessageBoxButtons.YesNo)==DialogResult.Yes)
+                        {
+                            
+                        }
                     }
                 }
                 else
@@ -251,15 +254,16 @@ namespace gobang
                     GameToControl.Paint.Drawchess(GameToControl.White);
                     if (Winner())
                     {
-                        return -1;
+                        if (MessageBox.Show("The white win! Retry?","We have a winner!",MessageBoxButtons.YesNo)==DialogResult.Yes)
+                        {
+                            
+                        }
                     }
                 }
-                return 0;
                 GameToControl.CurrentStep++;
             }
             else
             {
-                return 0;
             }
         }//consider write this as methods in control. The method can recieve two paramentors of Chess(black or white) and a ChessLocation(place to put the chess), meaning put the white(black) chess on to the point.
         public bool Check(Point toput)
