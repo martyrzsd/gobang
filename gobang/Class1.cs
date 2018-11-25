@@ -15,10 +15,215 @@ namespace gobang
             GameToControl = game;
         }//not finished
         public Game GameToControl { get; set; }
-        public int Winner(Game game)
-        {
-            return 1;
-        }//not finished
+        public bool Winner()//这个地方效率血妈低，还能再优化，不用去搜索，直接下的时候改数组的值就好了，我前面写扯了，没办法写下去了，以后再写成强耦合我吃屎。
+        {//祖传代码系列之16个if
+        bool judge = true;
+            if (GameToControl.CurrentStep % 2 == 0)//当前下的是黑棋
+            {
+                for (int i = 5; i < 5 + 19; i++)
+                {
+                    for (int j = 5; j < 5 + 19; j++)
+                    {
+                        if (GameToControl.Black.Matrix[i, j] == GameToControl.CurrentStep / 2)
+                        {
+                            for (int k = 0; k < 5; k++)
+                            {
+                                judge = judge & (GameToControl.Black.Matrix[i + k, j] >= 0);
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.Black.Matrix[i - k, j] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.Black.Matrix[i, j + k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.Black.Matrix[i, j - k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.Black.Matrix[i + k, j + k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.Black.Matrix[i - k, j - k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.Black.Matrix[i + k, j - k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.Black.Matrix[i - k, j + k] >= 0);
+                                }
+                            }
+                            return judge;
+                        }
+                        
+                    }
+                }
+                return false;
+            }
+            else//当前下的是白棋
+            {
+                for (int i = 5; i < 5 + 19; i++)
+                {
+                    for (int j = 5; j < 5 + 19; j++)
+                    {
+                        if (GameToControl.White.Matrix[i, j] == GameToControl.CurrentStep / 2)
+                        {
+                            for (int k = 0; k < 5; k++)
+                            {
+                                judge = judge & (GameToControl.White.Matrix[i + k, j] >= 0);
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.White.Matrix[i - k, j] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.White.Matrix[i, j + k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.White.Matrix[i, j - k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.White.Matrix[i + k, j + k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.White.Matrix[i - k, j - k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.White.Matrix[i + k, j - k] >= 0);
+                                }
+                            }
+                            if (judge)
+                            {
+                                return judge;
+                            }
+                            else
+                            {
+                                judge = true;
+                                for (int k = 0; k < 5; k++)
+                                {
+                                    judge = judge & (GameToControl.White.Matrix[i - k, j + k] >= 0);
+                                }
+                            }
+                            return judge;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
         public void Recover()
         {
 
@@ -27,7 +232,7 @@ namespace gobang
         {
 
         }//not finished
-        public void Put(Point toput)
+        public int Put(Point toput)
         {
             if (Check(toput))
             {
@@ -35,13 +240,26 @@ namespace gobang
                 {
                     GameToControl.Black.Chessput(toput);
                     GameToControl.Paint.Drawchess(GameToControl.Black);
+                    if (Winner())
+                    {
+                        return 1;
+                    }
                 }
                 else
                 {
                     GameToControl.White.Chessput(toput);
                     GameToControl.Paint.Drawchess(GameToControl.White);
+                    if (Winner())
+                    {
+                        return -1;
+                    }
                 }
+                return 0;
                 GameToControl.CurrentStep++;
+            }
+            else
+            {
+                return 0;
             }
         }//consider write this as methods in control. The method can recieve two paramentors of Chess(black or white) and a ChessLocation(place to put the chess), meaning put the white(black) chess on to the point.
         public bool Check(Point toput)
@@ -56,7 +274,7 @@ namespace gobang
             }
             foreach (Point item in GameToControl.White.ChessLocation)
             {
-                if (Math.Abs(item.X - toput.X) <= 13 &  Math.Abs(item.Y - toput.Y) <= 13)
+                if (Math.Abs(item.X - toput.X) <= 13 & Math.Abs(item.Y - toput.Y) <= 13)
                 {
                     result = false;
                 }
@@ -93,7 +311,7 @@ namespace gobang
             {
                 for (int i = 0; i < chess.step; i++)
                 {
-                    if (chess.ChessLocation[i] != new Point(0,0))
+                    if (chess.ChessLocation[i] != new Point(0, 0))
                     {
                         g.FillEllipse(new SolidBrush(Color.Black), chess.ChessLocation[i].X - 10, chess.ChessLocation[i].Y - 10, 20, 20);
                     }
@@ -103,7 +321,7 @@ namespace gobang
             {
                 for (int i = 0; i < chess.step; i++)
                 {
-                    if (chess.ChessLocation[i]!=new Point(0,0))
+                    if (chess.ChessLocation[i] != new Point(0, 0))
                     {
                         g.FillEllipse(new SolidBrush(Color.White), chess.ChessLocation[i].X - 10, chess.ChessLocation[i].Y - 10, 20, 20);
                     }
@@ -151,20 +369,48 @@ namespace gobang
             }
             ColorOfChess = _colorOfChess;
             step = 0;//this is used in the recovering game.
-            Matrix = new int[19, 19];//size of matrix
-            for (int i = 0; i < 19; i++)
+            Matrix = new int[30, 30];//size of matrix
+            for (int i = 0; i < 30; i++)
             {
-                for (int j = 0; j < 19; j++)
+                for (int j = 0; j < 30; j++)
                 {
                     Matrix[i, j] = -1;
                 }
             }//all content initialized to -1
+            Connection = new int[19, 19][];
+            for (int i = 0; i < 19; i++)
+            {
+                for (int j = 0; j < 19; j++)
+                {
+                    Connection[i, j] = new int[] { i, 19, 0, 19, 0, 19, 0, 19 };
+                    Connection[j, i][2] = Connection[i, j][0];
+                }
+            }//横向纵向链接数组初始化
+            for (int i = 0; i < 19; i++)
+            {
+                for (int j = 0; j < 19; j++)
+                {
+                    Connection[i, j][4] = i - j;//对角线上都是0，对角线下都是正的，上面是负的.两个一组，联通组长度加连接性。
+                    Connection[18 - i, 18 - j][6] = i - j;//反对角线的初始化，依旧保持反对角线上面是负的，下面是正的.
+                }
+            }
             ChessLocation = new Point[181];//initialize the point array
         }//not finished
-        public bool ColorOfChess { get; set; }
-        public int step = new int();//start at 0 to note down the step untill now, used in the recovery.
+        public bool ColorOfChess { get; set; }//true for black,false for white.
+        public int step = new int();//start at 0 to note down the step until now, used in the recovery.
         public Point[] ChessLocation { get; set; }//store the cordinate center of cross that has a chess on it.
         public int[,] Matrix { get; set; }//the content in this matrix show the order of the chess put, as well as the order of point.
+        public int[,][] Connection { get; set; }//{横,竖,左,右,}
+        public void Disconnect(int i, int j)
+        {
+
+        }
+        public void WeightChange(int i, int j)
+        {
+
+        }
+        public int[,] DefenseWeight { get; set; }
+        public int[,] OffenceWeight { get; set; }
         public void Chessput(Point toput)
         {
             for (int i = 0; i < 19; i++)
@@ -172,18 +418,19 @@ namespace gobang
                 for (int j = 0; j < 19; j++)
                 {
                     if (
-                        (XBoundary[j] - SizePerLine/2) < toput.X & toput.X <= (XBoundary[j + 1] - SizePerLine/2)
+                        (XBoundary[j] - SizePerLine / 2) < toput.X & toput.X <= (XBoundary[j + 1] - SizePerLine / 2)
                         &&
-                        (YBoundary[i] - SizePerLine/2) < toput.Y & toput.Y <= (YBoundary[i + 1] - SizePerLine/2)
+                        (YBoundary[i] - SizePerLine / 2) < toput.Y & toput.Y <= (YBoundary[i + 1] - SizePerLine / 2)
                         )
                     {
-                        Matrix[i, j] = step;
+                        Matrix[i + 5, j + 5] = step;
                         ChessLocation[step] = new Point(XBoundary[j], YBoundary[i]);
                     }
                 }
             }
             step++;
         }//fill the matrix and point array when put the chess in, do it after you do the checking. Have an imaginary boundary on the right and bottom
+
         public bool Check(Point toput)
         {
             bool result = true;
