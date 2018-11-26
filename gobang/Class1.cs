@@ -230,16 +230,16 @@ namespace gobang
             if (GameToControl.CurrentStep%2==0)
             {
                 GameToControl.CurrentStep--;
-                for (int i = 0; i < length; i++)
+                for (int i = 0; i < 19; i++)
                 {
-                    for (int j = 0; j < length; j++)
+                    for (int j = 0; j < 19; j++)
                     {
                         
                     }
                 }
-                for (int i = 0; i < length; i++)
+                for (int i = 0; i < 19; i++)
                 {
-                    for (int j = 0; j < length; j++)
+                    for (int j = 0; j < 19; j++)
                     {
                         
                     }

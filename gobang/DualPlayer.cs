@@ -21,17 +21,18 @@ namespace gobang
             Dual = new List<Game>() { new Game(Vertex, SizePerLine, this) };
             NumbersOfGame = 0;
             Score = new int[2] { 0, 0 };
+            Condition = 1;
         }
         public int SizePerLine { get; set; }
         public List<Game> Dual { get; set; }
         public int NumbersOfGame { get; set; }
         public Point Vertex { get; set; }
         public int[] Score { get; set; }
+        public int Condition { get; set; }
 
         private void DualPlayer_MouseClick(object sender, MouseEventArgs e)
         {
-            int condition = 1;
-            if (condition != -1)
+            if (Condition != -1)
             {
                 int ocassion = Dual[NumbersOfGame].Control.Put(e.Location);
                 if (ocassion == 1)
@@ -42,7 +43,7 @@ namespace gobang
                 }
                 if (ocassion == -1)
                 {
-                    condition = -1;
+                    Condition = -1;
                     //MessageBox.Show({"The Score if "+Score[0].ToString()+" : "+Score[1].ToString(), FinalScore);
                 }
             }
@@ -66,7 +67,7 @@ namespace gobang
 
         private void Recover_Click(object sender, EventArgs e)
         {
-            Dual[NumbersOfGame]
+            //Dual[NumbersOfGame]
         }
     }
 
