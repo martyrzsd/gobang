@@ -18,7 +18,7 @@ namespace gobang
         public Game GameToControl { get; set; }
         public bool Winner()//这个地方效率血妈低，还能再优化，不用去搜索，直接下的时候改数组的值就好了，我前面写扯了，没办法写下去了，以后再写成强耦合我吃屎。
         {//祖传代码系列之16个if
-        bool judge = true;
+            bool judge = true;
             if (GameToControl.CurrentStep % 2 == 0)//当前下的是黑棋
             {
                 for (int i = 5; i < 5 + 19; i++)
@@ -117,7 +117,7 @@ namespace gobang
                             }
                             return judge;
                         }
-                        
+
                     }
                 }
                 return false;
@@ -227,29 +227,46 @@ namespace gobang
         }
         public void Recover()
         {
-            if (GameToControl.CurrentStep%2==0)
+            if (GameToControl.CurrentStep % 2 == 0)
             {
+                for (int i = 0; i < 19; i++)
+                {
+                    for (int j = 0; j < 19; j++)
+                    {
+                        if (GameToControl.Black.Matrix[i, j] == GameToControl.CurrentStep)
+                        {
+                            GameToControl.Black.Matrix[i, j] = -1;
+                            GameToControl.Black.ChessLocation[GameToControl.CurrentStep] = new Point(0, 0);
+                            GameToControl.Paint.Drawchess(GameToControl.Black);
+                        }
+                    }
+                }
                 GameToControl.CurrentStep--;
+                GameToControl.Paint.Drawchess(GameToControl.Black);
+            }
+            else
+            {
                 for (int i = 0; i < 19; i++)
                 {
                     for (int j = 0; j < 19; j++)
                     {
-                        
+                        if (GameToControl.White.Matrix[i, j] == GameToControl.CurrentStep)
+                        {
+                            GameToControl.White.Matrix[i, j] = -1;
+                            GameToControl.White.ChessLocation[GameToControl.CurrentStep] = new Point(0, 0);
+                            GameToControl.Paint.Drawchess(GameToControl.White);
+                        }
                     }
                 }
-                for (int i = 0; i < 19; i++)
-                {
-                    for (int j = 0; j < 19; j++)
-                    {
-                        
-                    }
-                }
+                GameToControl.CurrentStep--;
+                GameToControl.Paint.Drawchess(GameToControl.White);
             }
         }//not finished
         public void Save() { }
-        public void Practice()
+        public Attemptation Practice()
         {
-
+            Attemptation State = (Attemptation)GameToControl;
+            return State;  
         }//not finished
         public int Put(Point toput)
         {
@@ -261,7 +278,7 @@ namespace gobang
                     GameToControl.Paint.Drawchess(GameToControl.Black);
                     if (Winner())
                     {
-                        if(MessageBox.Show("The black win!Retry?", "We have a winner", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        if (MessageBox.Show("The black win!Retry?", "We have a winner", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             return 1;
                         }
@@ -305,7 +322,7 @@ namespace gobang
                     result = false;
                 }
             }
-            if (toput.X<=GameToControl.Board.XBoundary[0]||toput.X>=GameToControl.Board.XBoundary[19]||toput.Y<=GameToControl.Board.YBoundary[0]||toput.Y>=GameToControl.Board.YBoundary[19])
+            if (toput.X <= GameToControl.Board.XBoundary[0] || toput.X >= GameToControl.Board.XBoundary[19] || toput.Y <= GameToControl.Board.YBoundary[0] || toput.Y >= GameToControl.Board.YBoundary[19])
             {
                 result = false;
             }
@@ -333,7 +350,7 @@ namespace gobang
         public void Drawboard()
         {
             SolidBrush covering = new SolidBrush(Color.BurlyWood);
-            g.FillRectangle(covering, GameToPaint.Board.XBoundary[0]-GameToPaint.SizePerLine, GameToPaint.Board.YBoundary[0]-GameToPaint.SizePerLine, GameToPaint.SizePerLine*20, GameToPaint.SizePerLine*20);
+            g.FillRectangle(covering, GameToPaint.Board.XBoundary[0] - GameToPaint.SizePerLine, GameToPaint.Board.YBoundary[0] - GameToPaint.SizePerLine, GameToPaint.SizePerLine * 20, GameToPaint.SizePerLine * 20);
             Pen Lines = new Pen(Color.Black);
             foreach (int item in GameToPaint.Board.XBoundary)
             {
@@ -343,7 +360,7 @@ namespace gobang
             {
                 g.DrawLine(Lines, GameToPaint.Board.XBoundary[0], item, GameToPaint.Board.XBoundary[19], item);
             }
-       }//not finished
+        }//not finished
         public void Drawchess(Chess chess)
         {
             if (chess.ColorOfChess)
@@ -388,7 +405,7 @@ namespace gobang
         public int SizePerLine { get; set; }// distance between line
         public int[] XBoundary { get; set; }// position of each vertical line
         public int[] YBoundary { get; set; }//position of each horizon line
-        
+
     }
 
     public class Chess : ChessBoard
@@ -521,16 +538,11 @@ namespace gobang
         public Control Control { get; set; }
         public Paint Paint { get; set; }
     }//examples for a game
+   public class Attemptation : Game
+   {
+       public Attemptation(Point vertex, int sizePerLine, Form form) : base(vertex, sizePerLine,form)
+       {
+
+       }
+   }// used in attemptation
 }
-//    class Attemptation : Game
-//    {
-//        public Attemptation(Point vertex, int sizePerLine, Form form) : base(vertex, sizePerLine,form)
-//        {
-//            //CurrentForm = form;
-//            //Black = new Chess(vertex, sizePerLine);
-//            //White = new Chess(vertex, sizePerLine);
-//            //Board = new Chess(vertex, sizePerLine);
-//            //Control = new Control();
-//        }
-//    }// used in attemptation
-//}
