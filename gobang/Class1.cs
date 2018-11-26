@@ -227,7 +227,24 @@ namespace gobang
         }
         public void Recover()
         {
-
+            if (GameToControl.CurrentStep%2==0)
+            {
+                GameToControl.CurrentStep--;
+                for (int i = 0; i < length; i++)
+                {
+                    for (int j = 0; j < length; j++)
+                    {
+                        
+                    }
+                }
+                for (int i = 0; i < length; i++)
+                {
+                    for (int j = 0; j < length; j++)
+                    {
+                        
+                    }
+                }
+            }
         }//not finished
         public void Save() { }
         public void Practice()
