@@ -227,9 +227,9 @@ namespace gobang
         }
         public void Recover()
         {
-            if (GameToControl.CurrentStep>0)
+            if (GameToControl.CurrentStep > 0)
             {
-            GameToControl.CurrentStep--;
+                GameToControl.CurrentStep--;
                 if (GameToControl.CurrentStep % 2 == 0)
                 {
                     try
@@ -285,13 +285,13 @@ namespace gobang
         public void Save() { }
         public Attemptation Practice()
         {
-            Attemptation InstanceToCreate = new Attemptation(GameToControl.Vertex,GameToControl.SizePerLine,GameToControl.CurrentForm);
+            Attemptation InstanceToCreate = new Attemptation(GameToControl.Vertex, GameToControl.SizePerLine, GameToControl.CurrentForm);
             InstanceToCreate.Black = GameToControl.Black;
-            InstanceToCreate.White=GameToControl.White;
-            InstanceToCreate.Control=GameToControl.Control;
-            InstanceToCreate.CurrentStep=GameToControl.CurrentStep;
-            InstanceToCreate.InitialStep=GameToControl.CurrentStep;
-            InstanceToCreate.Paint=GameToControl.Paint;
+            InstanceToCreate.White = GameToControl.White;
+            InstanceToCreate.Control = GameToControl.Control;
+            InstanceToCreate.CurrentStep = GameToControl.CurrentStep;
+            InstanceToCreate.InitialStep = GameToControl.CurrentStep;
+            InstanceToCreate.Paint = GameToControl.Paint;
             InstanceToCreate.Paint.Drawchess(InstanceToCreate.Black);
             InstanceToCreate.Paint.Drawchess(InstanceToCreate.White);
             return InstanceToCreate;
@@ -366,6 +366,224 @@ namespace gobang
         //chess balck and chess white and point p. And the method Put will use this method.
     }
 
+    public class AI
+    {
+        public AI(Game game)
+        {
+            Ai = game.Black;
+            Player = game.White;
+            Judge = new int[9];
+        }
+        public int[] Judge { get; set; }
+        public Chess Ai { get; set; }
+        public Chess Player { get; set; }
+        public int Count(int[] judge)
+        {
+            int i = 1;
+            int j = 1;
+            int result = 0;
+            while (judge[4 + i] > 0)
+            {
+                result++;
+                i++;
+            }
+            while (judge[4 - i] > 0)
+            {
+                result++;
+                j++;
+            }
+            return result;
+        }
+        public enum Flag
+        {
+            win5,
+            live4,
+            nothreat,
+            die4,
+            die3,
+            live3,
+            live2,
+            die2
+        }
+        public int MyMaxScore()
+        {
+            return 1;
+        }
+
+        public int HisMaxScore()
+        {
+            return 1;
+        }
+        public Flag SingleDirection(int[] judge)
+        {
+            switch (Count(judge))
+            {
+                default:
+                    return Flag.nothreat;
+                case 5:
+                    return Flag.win5;
+                case 4:
+                    if (FindDie4(judge))
+                    {
+                        return Flag.die4;
+                    }
+                    if (FindLive4(judge))
+                    {
+                        return Flag.live4;
+                    }
+                    else
+                    {
+                        return Flag.nothreat;
+                    }
+                case 3:
+                    return Find3(judge);
+            }
+        }
+        public bool Find5(int[] judge)
+        {
+            if (Count(judge) >= 5)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool FindLive4(int[] judge)
+        {
+            int i = 0;
+            int j = 0;
+            bool[] result = new bool[2] { false, false };
+            if (Count(judge) == 4)
+            {
+                while (judge[4 - i] > 0)
+                {
+                    i++;
+                }
+                if (judge[4 - i] == 0)
+                {
+                    result[0] = true;
+                }
+                while (judge[4 + j] > 0)
+                {
+                    j++;
+                }
+                if (judge[4 + j] == 0)
+                {
+                    result[1] = true;
+                }
+            }
+            return result[0] & result[1];
+        }
+        public bool FindDie4(int[] judge)
+        {
+            int i = 0;
+            int j = 0;
+            bool[] result = new bool[2] { false, false };
+            while (judge[4 - i] > 0)
+            {
+                i++;
+            }
+            if (judge[4 - i] == 0)
+            {
+                result[0] = true;
+            }
+            while (judge[4 + j] > 0)
+            {
+                j++;
+            }
+            if (judge[4 + j] == 0)
+            {
+                result[1] = true;
+            }
+            return (result[0] | result[1]) & !(result[0] & result[1]);
+        }
+
+        public Flag Find3(int[] judge)
+        {
+            int i = 0;
+            int j = 0;
+            bool[] result = new bool[4] { false, false, false, false };
+            while (judge[4 - i] > 0)
+            {
+                i++;
+            }
+            if (judge[4 - i - 1] == 0)
+            {
+                result[0] = true;
+            }
+            if (judge[4 - i] == 0)
+            {
+                result[1] = true;
+            }
+            while (judge[4 + j] > 0)
+            {
+                j++;
+            }
+            if (judge[4 + j] == 0)
+            {
+                result[2] = true;
+            }
+            if (judge[4 + j + 1] == 0)
+            {
+                result[3] = true;
+            }
+            if (result[1] & result[2])
+            {
+                if (!result[0] & !result[3])
+                {
+                    return Flag.die3;
+                }
+                if ((!result[0] & result[3]) | (result[0]&!result[3]))
+                {
+                    return Flag.live3;
+                }
+                else
+                {
+                    return Flag.nothreat;
+                }
+            }
+            if (result[1] & !result[2])
+            {
+                if (result[0])
+                {
+                    return Flag.die3;
+                }
+            }
+            if (!result[1]&result[2])
+            {
+                if (result[3])
+                {
+                    return Flag.die3;
+                }
+            }
+            else
+                return Flag.nothreat;
+        }
+        public Flag Find2(int[] judge)
+        {
+            int i = 0;
+            int j = 0;
+            bool[] result = new bool[6] { false, false, false, false ,false,false};
+            if (judge[5]>0|judge[3]>0)
+            {
+
+            }
+            else
+            {
+                if (judge[3]<0|judge[5]<0)
+                {
+                    return Flag.die2;
+                }
+                else
+                {
+                     
+                }
+            }
+
+        }
+    }
     public class Paint
     {
         public Paint(Game game)
@@ -575,7 +793,7 @@ namespace gobang
         public int InitialStep { get; set; }
         public void Recover()
         {
-            if (this.CurrentStep>=this.InitialStep)
+            if (this.CurrentStep >= this.InitialStep)
             {
                 base.Control.Recover();
             }
