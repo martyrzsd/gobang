@@ -227,46 +227,74 @@ namespace gobang
         }
         public void Recover()
         {
-            if (GameToControl.CurrentStep % 2 == 0)
+            if (GameToControl.CurrentStep>0)
             {
-                for (int i = 0; i < 19; i++)
+            GameToControl.CurrentStep--;
+                if (GameToControl.CurrentStep % 2 == 0)
                 {
-                    for (int j = 0; j < 19; j++)
+                    try
                     {
-                        if (GameToControl.Black.Matrix[i, j] == GameToControl.CurrentStep)
+                        for (int i = 4; i < 19 + 5; i++)
                         {
-                            GameToControl.Black.Matrix[i, j] = -1;
-                            GameToControl.Black.ChessLocation[GameToControl.CurrentStep] = new Point(0, 0);
-                            GameToControl.Paint.Drawchess(GameToControl.Black);
+                            for (int j = 4; j < 19 + 5; j++)
+                            {
+                                if (GameToControl.Black.Matrix[i, j] == GameToControl.CurrentStep / 2)
+                                {
+                                    GameToControl.Black.Matrix[i, j] = -1;
+                                }
+                            }
                         }
+                        GameToControl.Black.ChessLocation[GameToControl.CurrentStep / 2] = new Point(0, 0);
+                        GameToControl.Paint.Drawboard();
+                        GameToControl.Black.step--;
+                        GameToControl.Paint.Drawchess(GameToControl.Black);
+                        GameToControl.Paint.Drawchess(GameToControl.White);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("You don't have any chess to recall!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
-                GameToControl.CurrentStep--;
-                GameToControl.Paint.Drawchess(GameToControl.Black);
-            }
-            else
-            {
-                for (int i = 0; i < 19; i++)
+                else
                 {
-                    for (int j = 0; j < 19; j++)
+                    try
                     {
-                        if (GameToControl.White.Matrix[i, j] == GameToControl.CurrentStep)
+                        for (int i = 4; i < 19 + 5; i++)
                         {
-                            GameToControl.White.Matrix[i, j] = -1;
-                            GameToControl.White.ChessLocation[GameToControl.CurrentStep] = new Point(0, 0);
-                            GameToControl.Paint.Drawchess(GameToControl.White);
+                            for (int j = 4; j < 19 + 5; j++)
+                            {
+                                if (GameToControl.White.Matrix[i, j] == GameToControl.CurrentStep / 2)
+                                {
+                                    GameToControl.White.Matrix[i, j] = -1;
+                                }
+                            }
                         }
+                        GameToControl.White.ChessLocation[GameToControl.CurrentStep / 2] = new Point(0, 0);
+                        GameToControl.Paint.Drawboard();
+                        GameToControl.White.step--;
+                        GameToControl.Paint.Drawchess(GameToControl.White);
+                        GameToControl.Paint.Drawchess(GameToControl.Black);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("You don't have any chess to recall!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
-                GameToControl.CurrentStep--;
-                GameToControl.Paint.Drawchess(GameToControl.White);
             }
         }//not finished
         public void Save() { }
         public Attemptation Practice()
         {
-            Attemptation State = (Attemptation)GameToControl;
-            return State;  
+            Attemptation InstanceToCreate = new Attemptation(GameToControl.Vertex,GameToControl.SizePerLine,GameToControl.CurrentForm);
+            InstanceToCreate.Black = GameToControl.Black;
+            InstanceToCreate.White=GameToControl.White;
+            InstanceToCreate.Control=GameToControl.Control;
+            InstanceToCreate.CurrentStep=GameToControl.CurrentStep;
+            InstanceToCreate.InitialStep=GameToControl.CurrentStep;
+            InstanceToCreate.Paint=GameToControl.Paint;
+            InstanceToCreate.Paint.Drawchess(InstanceToCreate.Black);
+            InstanceToCreate.Paint.Drawchess(InstanceToCreate.White);
+            return InstanceToCreate;
         }//not finished
         public int Put(Point toput)
         {
@@ -538,11 +566,20 @@ namespace gobang
         public Control Control { get; set; }
         public Paint Paint { get; set; }
     }//examples for a game
-   public class Attemptation : Game
-   {
-       public Attemptation(Point vertex, int sizePerLine, Form form) : base(vertex, sizePerLine,form)
-       {
+    public class Attemptation : Game
+    {
+        public Attemptation(Point vertex, int sizePerLine, Form form) : base(vertex, sizePerLine, form)
+        {
 
-       }
-   }// used in attemptation
+        }
+        public int InitialStep { get; set; }
+        public void Recover()
+        {
+            if (this.CurrentStep>=this.InitialStep)
+            {
+                base.Control.Recover();
+            }
+        }
+
+    }// used in attemptation
 }

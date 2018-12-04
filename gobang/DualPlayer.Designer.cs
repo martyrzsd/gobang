@@ -71,14 +71,14 @@
             // dualToolStripMenuItem
             // 
             this.dualToolStripMenuItem.Name = "dualToolStripMenuItem";
-            this.dualToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.dualToolStripMenuItem.Size = new System.Drawing.Size(244, 38);
             this.dualToolStripMenuItem.Text = "Dual";
             this.dualToolStripMenuItem.Click += new System.EventHandler(this.dualToolStripMenuItem_Click_1);
             // 
             // competitiveToolStripMenuItem
             // 
             this.competitiveToolStripMenuItem.Name = "competitiveToolStripMenuItem";
-            this.competitiveToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.competitiveToolStripMenuItem.Size = new System.Drawing.Size(244, 38);
             this.competitiveToolStripMenuItem.Text = "Competitive";
             this.competitiveToolStripMenuItem.Click += new System.EventHandler(this.competitiveToolStripMenuItem_Click);
             // 
@@ -88,19 +88,19 @@
             this.gOFirstToolStripMenuItem,
             this.goSecondToolStripMenuItem});
             this.robotsToolStripMenuItem.Name = "robotsToolStripMenuItem";
-            this.robotsToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.robotsToolStripMenuItem.Size = new System.Drawing.Size(244, 38);
             this.robotsToolStripMenuItem.Text = "Robots";
             // 
             // gOFirstToolStripMenuItem
             // 
             this.gOFirstToolStripMenuItem.Name = "gOFirstToolStripMenuItem";
-            this.gOFirstToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.gOFirstToolStripMenuItem.Size = new System.Drawing.Size(230, 38);
             this.gOFirstToolStripMenuItem.Text = "Go First";
             // 
             // goSecondToolStripMenuItem
             // 
             this.goSecondToolStripMenuItem.Name = "goSecondToolStripMenuItem";
-            this.goSecondToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.goSecondToolStripMenuItem.Size = new System.Drawing.Size(230, 38);
             this.goSecondToolStripMenuItem.Text = "Go Second";
             // 
             // playBackToolStripMenuItem
@@ -139,6 +139,7 @@
             this.Attemptation.TabIndex = 2;
             this.Attemptation.Text = "Attemptation";
             this.Attemptation.UseVisualStyleBackColor = true;
+            this.Attemptation.Click += new System.EventHandler(this.Attemptation_Click);
             // 
             // ReStart
             // 
