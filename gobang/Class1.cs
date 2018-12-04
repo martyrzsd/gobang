@@ -21,9 +21,9 @@ namespace gobang
             bool judge = true;
             if (GameToControl.CurrentStep % 2 == 0)//当前下的是黑棋
             {
-                for (int i = 5; i < 5 + 19; i++)
+                for (int i = 5; i < 5 + 15; i++)
                 {
-                    for (int j = 5; j < 5 + 19; j++)
+                    for (int j = 5; j < 5 + 15; j++)
                     {
                         if (GameToControl.Black.Matrix[i, j] == GameToControl.CurrentStep / 2)
                         {
@@ -124,9 +124,9 @@ namespace gobang
             }
             else//当前下的是白棋
             {
-                for (int i = 5; i < 5 + 19; i++)
+                for (int i = 5; i < 5 + 15; i++)
                 {
-                    for (int j = 5; j < 5 + 19; j++)
+                    for (int j = 5; j < 5 + 15; j++)
                     {
                         if (GameToControl.White.Matrix[i, j] == GameToControl.CurrentStep / 2)
                         {
@@ -234,9 +234,9 @@ namespace gobang
                 {
                     try
                     {
-                        for (int i = 4; i < 19 + 5; i++)
+                        for (int i = 4; i < 15 + 5; i++)
                         {
-                            for (int j = 4; j < 19 + 5; j++)
+                            for (int j = 4; j < 15 + 5; j++)
                             {
                                 if (GameToControl.Black.Matrix[i, j] == GameToControl.CurrentStep / 2)
                                 {
@@ -259,9 +259,9 @@ namespace gobang
                 {
                     try
                     {
-                        for (int i = 4; i < 19 + 5; i++)
+                        for (int i = 4; i < 15 + 5; i++)
                         {
-                            for (int j = 4; j < 19 + 5; j++)
+                            for (int j = 4; j < 15 + 5; j++)
                             {
                                 if (GameToControl.White.Matrix[i, j] == GameToControl.CurrentStep / 2)
                                 {
@@ -292,8 +292,9 @@ namespace gobang
             InstanceToCreate.CurrentStep = GameToControl.CurrentStep;
             InstanceToCreate.InitialStep = GameToControl.CurrentStep;
             InstanceToCreate.Paint = GameToControl.Paint;
-            InstanceToCreate.Paint.Drawchess(InstanceToCreate.Black);
-            InstanceToCreate.Paint.Drawchess(InstanceToCreate.White);
+            GameToControl.Paint.Drawboard();
+            //GameToControl.Paint.Drawchess(GameToControl.Black);
+            //GameToControl.Paint.Drawchess(GameToControl.White);
             return InstanceToCreate;
         }//not finished
         public int Put(Point toput)
@@ -350,7 +351,7 @@ namespace gobang
                     result = false;
                 }
             }
-            if (toput.X <= GameToControl.Board.XBoundary[0] || toput.X >= GameToControl.Board.XBoundary[19] || toput.Y <= GameToControl.Board.YBoundary[0] || toput.Y >= GameToControl.Board.YBoundary[19])
+            if (toput.X <= GameToControl.Board.XBoundary[0] || toput.X >= GameToControl.Board.XBoundary[15] || toput.Y <= GameToControl.Board.YBoundary[0] || toput.Y >= GameToControl.Board.YBoundary[15])
             {
                 result = false;
             }
@@ -529,13 +530,14 @@ namespace gobang
             {
                 result[3] = true;
             }
+
             if (result[1] & result[2])
             {
                 if (!result[0] & !result[3])
                 {
                     return Flag.die3;
                 }
-                if ((!result[0] & result[3]) | (result[0]&!result[3]))
+                else if ((!result[0] & result[3]) | (result[0]&!result[3]))
                 {
                     return Flag.live3;
                 }
@@ -544,24 +546,26 @@ namespace gobang
                     return Flag.nothreat;
                 }
             }
-            if (result[1] & !result[2])
+            else if (result[1] & !result[2])
             {
                 if (result[0])
                 {
                     return Flag.die3;
                 }
+                return Flag.nothreat;
             }
-            if (!result[1]&result[2])
+            else if (!result[1]&result[2])
             {
                 if (result[3])
                 {
                     return Flag.die3;
                 }
+                return Flag.nothreat;
             }
             else
                 return Flag.nothreat;
         }
-        public Flag Find2(int[] judge)
+  /*      public Flag Find2(int[] judge)
         {
             int i = 0;
             int j = 0;
@@ -578,11 +582,11 @@ namespace gobang
                 }
                 else
                 {
-                     
+
                 }
             }
 
-        }
+        }*/
     }
     public class Paint
     {
@@ -596,15 +600,15 @@ namespace gobang
         public void Drawboard()
         {
             SolidBrush covering = new SolidBrush(Color.BurlyWood);
-            g.FillRectangle(covering, GameToPaint.Board.XBoundary[0] - GameToPaint.SizePerLine, GameToPaint.Board.YBoundary[0] - GameToPaint.SizePerLine, GameToPaint.SizePerLine * 20, GameToPaint.SizePerLine * 20);
+            g.FillRectangle(covering, GameToPaint.Board.XBoundary[0] - GameToPaint.SizePerLine, GameToPaint.Board.YBoundary[0] - GameToPaint.SizePerLine, GameToPaint.SizePerLine * 16, GameToPaint.SizePerLine * 16);
             Pen Lines = new Pen(Color.Black);
             foreach (int item in GameToPaint.Board.XBoundary)
             {
-                g.DrawLine(Lines, item, GameToPaint.Board.YBoundary[0], item, GameToPaint.Board.YBoundary[19]);
+                g.DrawLine(Lines, item, GameToPaint.Board.YBoundary[0], item, GameToPaint.Board.YBoundary[15]);
             }
             foreach (int item in GameToPaint.Board.YBoundary)
             {
-                g.DrawLine(Lines, GameToPaint.Board.XBoundary[0], item, GameToPaint.Board.XBoundary[19], item);
+                g.DrawLine(Lines, GameToPaint.Board.XBoundary[0], item, GameToPaint.Board.XBoundary[15], item);
             }
         }//not finished
         public void Drawchess(Chess chess)
@@ -615,7 +619,7 @@ namespace gobang
                 {
                     if (chess.ChessLocation[i] != new Point(0, 0))
                     {
-                        g.FillEllipse(new SolidBrush(Color.Black), chess.ChessLocation[i].X - 10, chess.ChessLocation[i].Y - 10, 20, 20);
+                        g.FillEllipse(new SolidBrush(Color.Black), chess.ChessLocation[i].X - 10, chess.ChessLocation[i].Y - 10, 16, 16);
                     }
                 }
             }
@@ -625,7 +629,7 @@ namespace gobang
                 {
                     if (chess.ChessLocation[i] != new Point(0, 0))
                     {
-                        g.FillEllipse(new SolidBrush(Color.White), chess.ChessLocation[i].X - 10, chess.ChessLocation[i].Y - 10, 20, 20);
+                        g.FillEllipse(new SolidBrush(Color.White), chess.ChessLocation[i].X - 10, chess.ChessLocation[i].Y - 10, 16, 16);
                     }
                 }
             }
@@ -637,13 +641,13 @@ namespace gobang
         public ChessBoard(Point vertex, int _sizePerLine)
         {
             SizePerLine = _sizePerLine;
-            XBoundary = new int[20];
-            YBoundary = new int[20];
-            for (int i = 0; i < 20; i++)
+            XBoundary = new int[16];
+            YBoundary = new int[16];
+            for (int i = 0; i < 16; i++)
             {
                 XBoundary[i] = vertex.X + SizePerLine * i;
             }
-            for (int i = 0; i < 20; i++)//here the lenth is 20 to satisfy the chessput methods
+            for (int i = 0; i < 16; i++)//here the lenth is 16 to satisfy the chessput methods
             {
                 YBoundary[i] = vertex.Y + SizePerLine * i;
             }
@@ -660,13 +664,13 @@ namespace gobang
             : base(vertex, _sizePerLine)
         {
             SizePerLine = _sizePerLine;
-            XBoundary = new int[20];
-            YBoundary = new int[20];
-            for (int i = 0; i < 20; i++)
+            XBoundary = new int[16];
+            YBoundary = new int[16];
+            for (int i = 0; i < 16; i++)
             {
                 XBoundary[i] = vertex.X + SizePerLine * i;
             }
-            for (int i = 0; i < 20; i++)//here the lenth is 20 to satisfy the chessput methods
+            for (int i = 0; i < 16; i++)//here the lenth is 16 to satisfy the chessput methods
             {
                 YBoundary[i] = vertex.Y + SizePerLine * i;
             }
@@ -680,57 +684,19 @@ namespace gobang
                     Matrix[i, j] = -1;
                 }
             }//all content initialized to -1
-            Connection = new int[19, 19][];
-            for (int i = 0; i < 19; i++)
-            {
-                for (int j = 0; j < 19; j++)
-                {
-                    Connection[i, j] = new int[] { i, 19, 0, 19, 0, 19, 0, 19 };
-                }
-            }//横向纵向链接数组初始化
-            for (int i = 0; i < 19; i++)
-            {
-                for (int j = 0; j < 19; j++)
-                {
-                    Connection[j, i][2] = Connection[i, j][0];
-                }
-            }
-            for (int i = 0; i < 19; i++)
-            {
-                for (int j = 0; j < 19; j++)
-                {
-                    Connection[i, j][4] = i - j;//对角线上都是0，对角线下都是正的，上面是负的.两个一组，联通组长度加连接性。
-                }
-            }
-            for (int i = 0; i < 19; i++)
-            {
-                for (int j = 0; j < 19; j++)
-                {
-                    Connection[18 - i, 18 - j][6] = i - j;
-                }
-            }
             ChessLocation = new Point[181];//initialize the point array
         }//not finished
         public bool ColorOfChess { get; set; }//true for black,false for white.
         public int step = new int();//start at 0 to note down the step until now, used in the recovery.
         public Point[] ChessLocation { get; set; }//store the cordinate center of cross that has a chess on it.
         public int[,] Matrix { get; set; }//the content in this matrix show the order of the chess put, as well as the order of point.
-        public int[,][] Connection { get; set; }//{横,竖,左,右,}
-        public void Disconnect(int i, int j)
-        {
-
-        }
-        public void WeightChange(int i, int j)
-        {
-
-        }
         public int[,] DefenseWeight { get; set; }
         public int[,] OffenceWeight { get; set; }
         public void Chessput(Point toput)
         {
-            for (int i = 0; i < 19; i++)
+            for (int i = 0; i < 15; i++)
             {
-                for (int j = 0; j < 19; j++)
+                for (int j = 0; j < 15; j++)
                 {
                     if (
                         (XBoundary[j] - SizePerLine / 2) < toput.X & toput.X <= (XBoundary[j + 1] - SizePerLine / 2)

@@ -54,7 +54,7 @@ namespace gobang
                     }
                 }
             }
-            else
+            if(AttemptationStatus)
             {
                 if (Condition)
                 {
@@ -62,8 +62,10 @@ namespace gobang
                     if (ocassion == 1)
                     {
                         NumbersOfGame++;
-                        Dual.Add(new Game(Vertex, SizePerLine, this));
-
+                        Dual[NumbersOfGame].Paint.Drawboard();
+                        Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].Black);
+                        Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].White);
+                        Dual.Add(Dual[AttemptationIndexArray[NumbersOfGame]].Control.Practice());
                     }
                     if (ocassion == -1)
                     {
@@ -94,9 +96,12 @@ namespace gobang
             }
             else
             {
+                Dual[NumbersOfGame].Paint.Drawboard();
                 Dual.Add(Dual[AttemptationIndexArray[NumbersOfGame]].Control.Practice());
+                AttemptationIndexArray[NumbersOfGame+1] = AttemptationIndexArray[NumbersOfGame];
                 NumbersOfGame++;
-                AttemptationIndexArray[NumbersOfGame] = AttemptationIndexArray[NumbersOfGame-1];//这里的数据结构可以进行进一步优化，但是鉴于处理的问题非常的简单，我就这么简单地搞了。
+                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].Black);
+                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].White)
             }
         }//restart
 
@@ -128,6 +133,7 @@ namespace gobang
             {
                 AttemptationStatus = false;
                 Attemptation.Text = "Attempt";
+                
             }
         }
     }
