@@ -293,8 +293,8 @@ namespace gobang
             InstanceToCreate.InitialStep = GameToControl.CurrentStep;
             InstanceToCreate.Paint = GameToControl.Paint;
             GameToControl.Paint.Drawboard();
-            //GameToControl.Paint.Drawchess(GameToControl.Black);
-            //GameToControl.Paint.Drawchess(GameToControl.White);
+            GameToControl.Paint.Drawchess(GameToControl.Black);
+            GameToControl.Paint.Drawchess(GameToControl.White);
             return InstanceToCreate;
         }//not finished
         public int Put(Point toput)

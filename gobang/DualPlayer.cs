@@ -58,7 +58,7 @@ namespace gobang
             {
                 if (Condition)
                 {
-                    int ocassion = Dual[NumbersOfGame].Control.Put(e.Location);
+                    int ocassion = Dual[2].Control.Put(e.Location);
                     if (ocassion == 1)
                     {
                         NumbersOfGame++;
@@ -96,12 +96,17 @@ namespace gobang
             }
             else
             {
-                Dual[NumbersOfGame].Paint.Drawboard();
-                Dual.Add(Dual[AttemptationIndexArray[NumbersOfGame]].Control.Practice());
-                AttemptationIndexArray[NumbersOfGame+1] = AttemptationIndexArray[NumbersOfGame];
-                NumbersOfGame++;
-                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].Black);
-                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].White)
+                Dual[0].Paint.Drawboard();
+                Dual[0].Paint.Drawchess(Dual[0].Black);
+                Dual[1].Paint.Drawboard();
+                Dual[1].Paint.Drawchess(Dual[1].Black);
+                ////Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawboard();
+                ////Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[AttemptationIndexArray[NumbersOfGame]].Black);
+                //Dual.Add(Dual[AttemptationIndexArray[NumbersOfGame]].Control.Practice());
+                //AttemptationIndexArray[NumbersOfGame+1] = AttemptationIndexArray[NumbersOfGame];
+                //NumbersOfGame++;
+                //Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[NumbersOfGame].Black);
+                //Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[NumbersOfGame].White); 
             }
         }//restart
 
