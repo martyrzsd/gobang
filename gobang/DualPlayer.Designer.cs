@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DualPlayer));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.gameModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,10 +45,12 @@
             this.CommentBox = new System.Windows.Forms.TextBox();
             this.Comment = new System.Windows.Forms.Button();
             this.soundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.AutoPlay = new System.Windows.Forms.Button();
             this.Next = new System.Windows.Forms.Button();
             this.Previous = new System.Windows.Forms.Button();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -120,9 +123,10 @@
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.soundToolStripMenuItem});
+            this.soundToolStripMenuItem,
+            this.saveToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(113, 36);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(113, 38);
             this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // toolStripMenuItem1
@@ -189,17 +193,6 @@
             this.soundToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
             this.soundToolStripMenuItem.Text = "Sound";
             // 
-            // AutoPlay
-            // 
-            this.AutoPlay.Enabled = false;
-            this.AutoPlay.Location = new System.Drawing.Point(669, 100);
-            this.AutoPlay.Name = "AutoPlay";
-            this.AutoPlay.Size = new System.Drawing.Size(75, 23);
-            this.AutoPlay.TabIndex = 6;
-            this.AutoPlay.Text = "AutoPlay";
-            this.AutoPlay.UseVisualStyleBackColor = true;
-            this.AutoPlay.Visible = false;
-            // 
             // Next
             // 
             this.Next.Enabled = false;
@@ -210,6 +203,7 @@
             this.Next.Text = "Next";
             this.Next.UseVisualStyleBackColor = true;
             this.Next.Visible = false;
+            this.Next.Click += new System.EventHandler(this.Next_Click);
             // 
             // Previous
             // 
@@ -221,15 +215,32 @@
             this.Previous.Text = "Previous";
             this.Previous.UseVisualStyleBackColor = true;
             this.Previous.Visible = false;
+            this.Previous.Click += new System.EventHandler(this.Previous_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.saveToolStripMenuItem.Text = "Save";
+            // 
+            // axWindowsMediaPlayer1
+            // 
+            this.axWindowsMediaPlayer1.Enabled = true;
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(583, 464);
+            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(75, 23);
+            this.axWindowsMediaPlayer1.TabIndex = 9;
+            this.axWindowsMediaPlayer1.Visible = false;
             // 
             // DualPlayer
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.BurlyWood;
             this.ClientSize = new System.Drawing.Size(774, 529);
+            this.Controls.Add(this.axWindowsMediaPlayer1);
             this.Controls.Add(this.Previous);
             this.Controls.Add(this.Next);
-            this.Controls.Add(this.AutoPlay);
             this.Controls.Add(this.Comment);
             this.Controls.Add(this.CommentBox);
             this.Controls.Add(this.ReStart);
@@ -243,6 +254,7 @@
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DualPlayer_MouseClick);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,8 +278,9 @@
         private System.Windows.Forms.TextBox CommentBox;
         private System.Windows.Forms.Button Comment;
         private System.Windows.Forms.ToolStripMenuItem soundToolStripMenuItem;
-        private System.Windows.Forms.Button AutoPlay;
         private System.Windows.Forms.Button Next;
         private System.Windows.Forms.Button Previous;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
     }
 }

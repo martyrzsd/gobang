@@ -228,7 +228,7 @@ namespace gobang
         }
         public void Recover()
         {
-            if (GameToControl.CurrentStep > 0)
+            if (GameToControl.CurrentStep >= 0)
             {
                 GameToControl.CurrentStep--;
                 if (GameToControl.CurrentStep % 2 == 0)
@@ -281,6 +281,10 @@ namespace gobang
                         MessageBox.Show("You don't have any chess to recall!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("There's no chess left!");
             }
         }//not finished
         public void Save() { }
@@ -741,6 +745,67 @@ namespace gobang
             }
 
         }
+        public void DrawchessWithNumber(Game game, int endstep)
+        {
+            if (game.InitialStep % 2 == 0)
+            {
+                int b = 1;
+                int w = 2;
+                for (int i = 0; i < 30; i++)
+                {
+                    for (int j = 0; j < 30; j++)
+                    {
+                        if (game.Black.Matrix[i, j] >= game.InitialStep / 2)
+                        {
+                            if (endstep >= game.Black.Matrix[i, j] * 2 + b - game.InitialStep)
+                            {
+
+
+                                DrawNumber(game.Black.Matrix[i, j] * 2 + b - game.InitialStep, new SolidBrush(Color.White), new Point(game.Black.ChessLocation[game.Black.Matrix[i, j]].X - game.Black.SizePerLine / 2, game.Black.ChessLocation[game.Black.Matrix[i, j]].Y - game.Black.SizePerLine / 2));
+                            }
+                        }
+                        if (game.White.Matrix[i, j] >= game.InitialStep / 2)
+                        {
+                            if (endstep >= game.White.Matrix[i, j] * 2 + w - game.InitialStep)
+                            {
+
+
+                                DrawNumber(game.White.Matrix[i, j] * 2 + w - game.InitialStep, new SolidBrush(Color.Black), new Point(game.White.ChessLocation[game.White.Matrix[i, j]].X - game.White.SizePerLine / 2, game.White.ChessLocation[game.White.Matrix[i, j]].Y - game.White.SizePerLine / 2));
+                            }
+                            }
+                    }
+                }
+            }
+            else
+            {
+                int b = 1;
+                int w = 2;
+                for (int i = 0; i < 30; i++)
+                {
+                    for (int j = 0; j < 30; j++)
+                    {
+                        if (game.Black.Matrix[i, j] > game.InitialStep / 2)
+                        {
+                            if (endstep >= game.Black.Matrix[i, j] * 2 - game.InitialStep + b)
+                            {
+
+
+                                DrawNumber(game.Black.Matrix[i, j] * 2 - game.InitialStep + b, new SolidBrush(Color.White), new Point(game.Black.ChessLocation[game.Black.Matrix[i, j]].X - game.Black.SizePerLine / 2, game.Black.ChessLocation[game.Black.Matrix[i, j]].Y - game.Black.SizePerLine / 2));
+                            }
+                        }
+                        if (game.White.Matrix[i, j] >= game.InitialStep / 2)
+                        {
+                            if (endstep >= game.White.Matrix[i, j] * 2 - game.InitialStep + w)
+                            {
+
+
+                                DrawNumber(game.White.Matrix[i, j] * 2 - game.InitialStep + w, new SolidBrush(Color.Black), new Point(game.White.ChessLocation[game.White.Matrix[i, j]].X - game.White.SizePerLine / 2, game.White.ChessLocation[game.White.Matrix[i, j]].Y - game.White.SizePerLine / 2));
+                            }
+                            }
+                    }
+                }
+            }
+        }
     }
 
     public class PlayBack
@@ -756,8 +821,19 @@ namespace gobang
         public void NextStep()
         {
             GameToPlayBack.Paint.Drawboard();
-            GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
-            GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
+            if (CurrentPlayBackStep % 2 == 0)
+            {
+
+                GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep+1);
+                GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
+            }
+            else
+            {
+
+                GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep+1);
+                GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
+            }
+                GameToPlayBack.Paint.DrawchessWithNumber(GameToPlayBack,CurrentPlayBackStep);
             CurrentPlayBackStep++;
         }
         public void NextStep(bool AutoPlayStatus, int Lag)
@@ -765,7 +841,7 @@ namespace gobang
             if (AutoPlayStatus)
             {
                 NextStep();
-                Thread.Sleep(1000 * Lag);
+                Thread.Sleep(100* Lag);
                 NextStep(AutoPlayStatus, Lag);
             }
         }
@@ -778,6 +854,7 @@ namespace gobang
         }
         public void AutoPlay(int Lag)
         {
+            GameToPlayBack.Paint.Drawboard();
             AutoPlayStatus = true;
             while (CurrentPlayBackStep < GameToPlayBack.CurrentStep)
             {

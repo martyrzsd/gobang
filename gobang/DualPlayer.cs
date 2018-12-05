@@ -29,6 +29,7 @@ namespace gobang
         public int SizePerLine { get; set; }
         public List<Game> Dual { get; set; }
         public int NumbersOfGame { get; set; }
+        public Game PlaybackGame { get; set; }
         public Point Vertex { get; set; }
         public int[] Score { get; set; }
         public bool PlayBackStatus { get; set; }
@@ -162,20 +163,27 @@ namespace gobang
         public void PlayBack(Game GameToPlayBack)
         {
             PlayBackStatus = true;
+            PlaybackGame = GameToPlayBack;
             Dual.Add(GameToPlayBack.Control.Practice());
+            Dual[NumbersOfGame].Paint.Drawboard();
             NumbersOfGame++;
             //AttemptationIndexArray[NumbersOfGame]
             AttemptationStatus = true;
             Recover.Visible = false;
             Recover.Enabled = false;
-            ReStart.Visible = false;
-            ReStart.Enabled = false;
+            Attemptation.Visible = false;
+            
+            //ReStart.Visible = false;
+            //ReStart.Enabled = false;
             Next.Visible = true;
             Next.Enabled = true;
             Previous.Visible = true;
             Previous.Enabled = true;
-            AutoPlay.Visible = true;
-            AutoPlay.Enabled = true;
+            CommentBox.Visible = true;
+            Comment.Visible = true;
+            Comment.Enabled = true;
+            CommentBox.Enabled = true;
+            CommentBox.Text = GameToPlayBack.Comments[GameToPlayBack.InitialStep];
         }
 
         private void playBackToolStripMenuItem_MouseEnter(object sender, EventArgs e)
@@ -214,9 +222,19 @@ namespace gobang
         private void GameToPlayback_Click(object sender, EventArgs e)
         {
             PlayBack(Dual[Convert.ToInt32(((ToolStripMenuItem)sender).Tag)]);
-        }   
+        }
 
+        private void Previous_Click(object sender, EventArgs e)
+        {
+            PlaybackGame.PlayBack.PreviousStep();
+            CommentBox.Text = PlaybackGame.Comments[PlaybackGame.PlayBack.CurrentPlayBackStep];
+        }
 
+        private void Next_Click(object sender, EventArgs e)
+        {
+            PlaybackGame.PlayBack.NextStep();
+            //CommentBox.Text = PlaybackGame.Comments[];
+        }
     }
 
 }
