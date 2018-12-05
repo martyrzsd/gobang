@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 using System.IO;
 
 namespace gobang
@@ -250,7 +251,7 @@ namespace gobang
                         GameToControl.Paint.Drawchess(GameToControl.Black);
                         GameToControl.Paint.Drawchess(GameToControl.White);
                     }
-                    catch (Exception)
+                    catch (IndexOutOfRangeException)
                     {
                         MessageBox.Show("You don't have any chess to recall!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
@@ -275,7 +276,7 @@ namespace gobang
                         GameToControl.Paint.Drawchess(GameToControl.White);
                         GameToControl.Paint.Drawchess(GameToControl.Black);
                     }
-                    catch (Exception)
+                    catch (IndexOutOfRangeException)
                     {
                         MessageBox.Show("You don't have any chess to recall!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
@@ -285,16 +286,25 @@ namespace gobang
         public void Save() { }
         public Attemptation Practice()
         {
-            Attemptation InstanceToCreate = new Attemptation(GameToControl.Vertex, GameToControl.SizePerLine, GameToControl.CurrentForm);
-            InstanceToCreate.Black = GameToControl.Black;
-            InstanceToCreate.White = GameToControl.White;
-            InstanceToCreate.Control = GameToControl.Control;
-            InstanceToCreate.CurrentStep = GameToControl.CurrentStep;
-            InstanceToCreate.InitialStep = GameToControl.CurrentStep;
-            InstanceToCreate.Paint = GameToControl.Paint;
-            GameToControl.Paint.Drawboard();
-            GameToControl.Paint.Drawchess(GameToControl.Black);
-            GameToControl.Paint.Drawchess(GameToControl.White);
+            Attemptation InstanceToCreate = new Attemptation(GameToControl.Vertex, GameToControl.SizePerLine, GameToControl.CurrentForm, GameToControl.CurrentStep);
+            for (int i = 0; i < InstanceToCreate.Black.ChessLocation.Length; i++)
+            {
+                InstanceToCreate.Black.ChessLocation[i] = GameToControl.Black.ChessLocation[i];
+                InstanceToCreate.White.ChessLocation[i] = GameToControl.White.ChessLocation[i];
+            }
+            for (int i = 0; i < 30; i++)
+            {
+                for (int j = 0; j < 30; j++)
+                {
+                    InstanceToCreate.Black.Matrix[i, j] = GameToControl.Black.Matrix[i, j];
+                    InstanceToCreate.White.Matrix[i, j] = GameToControl.White.Matrix[i, j];
+                }
+            }
+            InstanceToCreate.Black.step = GameToControl.Black.step;
+            InstanceToCreate.White.step = GameToControl.White.step;
+            InstanceToCreate.CurrentStep = GameToControl.CurrentStep; InstanceToCreate.Paint.Drawboard();
+            InstanceToCreate.Paint.Drawchess(InstanceToCreate.Black);
+            InstanceToCreate.Paint.Drawchess(InstanceToCreate.White);
             return InstanceToCreate;
         }//not finished
         public int Put(Point toput)
@@ -365,6 +375,19 @@ namespace gobang
             return result;
         }//finished in the class chess, but now i want to put this into the class control. With two paramentor 
         //chess balck and chess white and point p. And the method Put will use this method.
+        public void MakeComments(string commentsToMake)
+        {
+            int i = 0;
+            if (GameToControl.Comments[i] == "")
+            {
+                i++;
+            }
+            else
+            {
+                GameToControl.Comments[i] = commentsToMake;
+                GameToControl.CommentsStep[i] = GameToControl.CurrentStep;
+            }
+        }
     }
 
     public class AI
@@ -537,7 +560,7 @@ namespace gobang
                 {
                     return Flag.die3;
                 }
-                else if ((!result[0] & result[3]) | (result[0]&!result[3]))
+                else if ((!result[0] & result[3]) | (result[0] & !result[3]))
                 {
                     return Flag.live3;
                 }
@@ -554,7 +577,7 @@ namespace gobang
                 }
                 return Flag.nothreat;
             }
-            else if (!result[1]&result[2])
+            else if (!result[1] & result[2])
             {
                 if (result[3])
                 {
@@ -565,28 +588,28 @@ namespace gobang
             else
                 return Flag.nothreat;
         }
-  /*      public Flag Find2(int[] judge)
-        {
-            int i = 0;
-            int j = 0;
-            bool[] result = new bool[6] { false, false, false, false ,false,false};
-            if (judge[5]>0|judge[3]>0)
-            {
+        /*      public Flag Find2(int[] judge)
+              {
+                  int i = 0;
+                  int j = 0;
+                  bool[] result = new bool[6] { false, false, false, false ,false,false};
+                  if (judge[5]>0|judge[3]>0)
+                  {
 
-            }
-            else
-            {
-                if (judge[3]<0|judge[5]<0)
-                {
-                    return Flag.die2;
-                }
-                else
-                {
+                  }
+                  else
+                  {
+                      if (judge[3]<0|judge[5]<0)
+                      {
+                          return Flag.die2;
+                      }
+                      else
+                      {
 
-                }
-            }
+                      }
+                  }
 
-        }*/
+              }*/
     }
     public class Paint
     {
@@ -610,6 +633,8 @@ namespace gobang
             {
                 g.DrawLine(Lines, GameToPaint.Board.XBoundary[0], item, GameToPaint.Board.XBoundary[15], item);
             }
+            DrawEdgeIndex();
+            DrawKeyPoint();
         }//not finished
         public void Drawchess(Chess chess)
         {
@@ -633,7 +658,136 @@ namespace gobang
                     }
                 }
             }
+
         }//notfinished
+        public void Drawchess(Chess chess, int EndNumbers)
+        {
+            if (chess.ColorOfChess)
+            {
+                for (int i = 0; i < EndNumbers / 2; i++)
+                {
+                    if (chess.ChessLocation[i] != new Point(0, 0))
+                    {
+                        g.FillEllipse(new SolidBrush(Color.Black), chess.ChessLocation[i].X - 10, chess.ChessLocation[i].Y - 10, 16, 16);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < EndNumbers / 2; i++)
+                {
+                    if (chess.ChessLocation[i] != new Point(0, 0))
+                    {
+                        g.FillEllipse(new SolidBrush(Color.White), chess.ChessLocation[i].X - 10, chess.ChessLocation[i].Y - 10, 16, 16);
+                    }
+                }
+            }//playback used
+
+        }
+        public void DrawKeyPoint()
+        {
+
+        }
+
+        public void DrawEdgeIndex()
+        {
+
+        }
+        public void DrawNumber(int number, SolidBrush color, Point p)
+        {
+            g.DrawString(number.ToString(), new Font("Microsoft Sans Serif", 12), color, p);
+        }
+        public void DrawchessWithNumber(Game game)
+        {
+            if (game.InitialStep % 2 == 0)
+            {
+                int b = 1;
+                int w = 2;
+                for (int i = 0; i < 30; i++)
+                {
+                    for (int j = 0; j < 30; j++)
+                    {
+                        if (game.Black.Matrix[i, j] >= game.InitialStep / 2)
+                        {
+                            DrawNumber(game.Black.Matrix[i, j] * 2 + b - game.InitialStep, new SolidBrush(Color.White), new Point(game.Black.ChessLocation[game.Black.Matrix[i, j]].X - game.Black.SizePerLine / 2, game.Black.ChessLocation[game.Black.Matrix[i, j]].Y - game.Black.SizePerLine / 2));
+
+                        }
+                        if (game.White.Matrix[i, j] >= game.InitialStep / 2)
+                        {
+                            DrawNumber(game.White.Matrix[i, j] * 2 + w - game.InitialStep, new SolidBrush(Color.Black), new Point(game.White.ChessLocation[game.White.Matrix[i, j]].X - game.White.SizePerLine / 2, game.White.ChessLocation[game.White.Matrix[i, j]].Y - game.White.SizePerLine / 2));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                int b = 1;
+                int w = 2;
+                for (int i = 0; i < 30; i++)
+                {
+                    for (int j = 0; j < 30; j++)
+                    {
+                        if (game.Black.Matrix[i, j] > game.InitialStep / 2)
+                        {
+                            DrawNumber(game.Black.Matrix[i, j] * 2 - game.InitialStep + b, new SolidBrush(Color.White), new Point(game.Black.ChessLocation[game.Black.Matrix[i, j]].X - game.Black.SizePerLine / 2, game.Black.ChessLocation[game.Black.Matrix[i, j]].Y - game.Black.SizePerLine / 2));
+
+                        }
+                        if (game.White.Matrix[i, j] >= game.InitialStep / 2)
+                        {
+                            DrawNumber(game.White.Matrix[i, j] * 2 - game.InitialStep + w, new SolidBrush(Color.Black), new Point(game.White.ChessLocation[game.White.Matrix[i, j]].X - game.White.SizePerLine / 2, game.White.ChessLocation[game.White.Matrix[i, j]].Y - game.White.SizePerLine / 2));
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    public class PlayBack
+    {
+        public PlayBack(Game game)
+        {
+            GameToPlayBack = game;
+            AutoPlayStatus = false;
+        }
+        public Game GameToPlayBack { get; set; }
+        public int CurrentPlayBackStep { get; set; }
+        public bool AutoPlayStatus { get; set; }
+        public void NextStep()
+        {
+            GameToPlayBack.Paint.Drawboard();
+            GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
+            GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
+            CurrentPlayBackStep++;
+        }
+        public void NextStep(bool AutoPlayStatus, int Lag)
+        {
+            if (AutoPlayStatus)
+            {
+                NextStep();
+                Thread.Sleep(1000 * Lag);
+                NextStep(AutoPlayStatus, Lag);
+            }
+        }
+        public void PreviousStep()
+        {
+            CurrentPlayBackStep--;
+            GameToPlayBack.Paint.Drawboard();
+            GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
+            GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
+        }
+        public void AutoPlay(int Lag)
+        {
+            AutoPlayStatus = true;
+            while (CurrentPlayBackStep < GameToPlayBack.CurrentStep)
+            {
+                NextStep(AutoPlayStatus, Lag);
+            }
+        }
+        public void Pause()
+        {
+            AutoPlayStatus = false;
+        }
     }
 
     public class ChessBoard
@@ -736,32 +890,43 @@ namespace gobang
             Board = new ChessBoard(vertex, _sizePerLine);
             Control = new Control(this);
             Paint = new Paint(this);
+            PlayBack = new PlayBack(this);
             Vertex = vertex;
             SizePerLine = _sizePerLine;
             this.Paint.Drawboard();
+            Comments = new string[180];
+            CommentsStep = new int[180];
         }//one game shall have a black white chess and a chessboard, as well as two controller for logic and painting.
         public Form CurrentForm { get; set; }
+        public PlayBack PlayBack { get; set; }
         public Point Vertex { get; set; }
         public int SizePerLine { get; set; }
         public int CurrentStep { get; set; }
+        public int InitialStep { get; set; }
         public Chess Black { get; set; }
         public Chess White { get; set; }
         public ChessBoard Board { get; set; }
         public Control Control { get; set; }
         public Paint Paint { get; set; }
+        public string[] Comments { get; set; }
+        public int[] CommentsStep { get; set; }
+        public virtual void Recover() { }
     }//examples for a game
     public class Attemptation : Game
     {
-        public Attemptation(Point vertex, int sizePerLine, Form form) : base(vertex, sizePerLine, form)
+        public Attemptation(Point vertex, int sizePerLine, Form form, int Initial) : base(vertex, sizePerLine, form)
         {
-
+            InitialStep = Initial;
         }
-        public int InitialStep { get; set; }
-        public void Recover()
+        public override void Recover()
         {
-            if (this.CurrentStep >= this.InitialStep)
+            if (CurrentStep > InitialStep)
             {
-                base.Control.Recover();
+                Control.Recover();
+            }
+            else
+            {
+                MessageBox.Show("You cannot change the original game!");
             }
         }
 

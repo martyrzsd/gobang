@@ -41,6 +41,12 @@
             this.Recover = new System.Windows.Forms.Button();
             this.Attemptation = new System.Windows.Forms.Button();
             this.ReStart = new System.Windows.Forms.Button();
+            this.CommentBox = new System.Windows.Forms.TextBox();
+            this.Comment = new System.Windows.Forms.Button();
+            this.soundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AutoPlay = new System.Windows.Forms.Button();
+            this.Next = new System.Windows.Forms.Button();
+            this.Previous = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,14 +77,14 @@
             // dualToolStripMenuItem
             // 
             this.dualToolStripMenuItem.Name = "dualToolStripMenuItem";
-            this.dualToolStripMenuItem.Size = new System.Drawing.Size(244, 38);
+            this.dualToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
             this.dualToolStripMenuItem.Text = "Dual";
             this.dualToolStripMenuItem.Click += new System.EventHandler(this.dualToolStripMenuItem_Click_1);
             // 
             // competitiveToolStripMenuItem
             // 
             this.competitiveToolStripMenuItem.Name = "competitiveToolStripMenuItem";
-            this.competitiveToolStripMenuItem.Size = new System.Drawing.Size(244, 38);
+            this.competitiveToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
             this.competitiveToolStripMenuItem.Text = "Competitive";
             this.competitiveToolStripMenuItem.Click += new System.EventHandler(this.competitiveToolStripMenuItem_Click);
             // 
@@ -88,19 +94,19 @@
             this.gOFirstToolStripMenuItem,
             this.goSecondToolStripMenuItem});
             this.robotsToolStripMenuItem.Name = "robotsToolStripMenuItem";
-            this.robotsToolStripMenuItem.Size = new System.Drawing.Size(244, 38);
+            this.robotsToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
             this.robotsToolStripMenuItem.Text = "Robots";
             // 
             // gOFirstToolStripMenuItem
             // 
             this.gOFirstToolStripMenuItem.Name = "gOFirstToolStripMenuItem";
-            this.gOFirstToolStripMenuItem.Size = new System.Drawing.Size(230, 38);
+            this.gOFirstToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
             this.gOFirstToolStripMenuItem.Text = "Go First";
             // 
             // goSecondToolStripMenuItem
             // 
             this.goSecondToolStripMenuItem.Name = "goSecondToolStripMenuItem";
-            this.goSecondToolStripMenuItem.Size = new System.Drawing.Size(230, 38);
+            this.goSecondToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
             this.goSecondToolStripMenuItem.Text = "Go Second";
             // 
             // playBackToolStripMenuItem
@@ -108,9 +114,13 @@
             this.playBackToolStripMenuItem.Name = "playBackToolStripMenuItem";
             this.playBackToolStripMenuItem.Size = new System.Drawing.Size(119, 36);
             this.playBackToolStripMenuItem.Text = "PlayBack";
+            this.playBackToolStripMenuItem.Click += new System.EventHandler(this.playBackToolStripMenuItem_Click);
+            this.playBackToolStripMenuItem.MouseEnter += new System.EventHandler(this.playBackToolStripMenuItem_MouseEnter);
             // 
             // settingsToolStripMenuItem
             // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.soundToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(113, 36);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -151,11 +161,77 @@
             this.ReStart.UseVisualStyleBackColor = true;
             this.ReStart.Click += new System.EventHandler(this.button1_Click);
             // 
+            // CommentBox
+            // 
+            this.CommentBox.Enabled = false;
+            this.CommentBox.Location = new System.Drawing.Point(550, 220);
+            this.CommentBox.Multiline = true;
+            this.CommentBox.Name = "CommentBox";
+            this.CommentBox.Size = new System.Drawing.Size(194, 119);
+            this.CommentBox.TabIndex = 4;
+            this.CommentBox.Visible = false;
+            // 
+            // Comment
+            // 
+            this.Comment.Enabled = false;
+            this.Comment.Location = new System.Drawing.Point(550, 358);
+            this.Comment.Name = "Comment";
+            this.Comment.Size = new System.Drawing.Size(75, 26);
+            this.Comment.TabIndex = 5;
+            this.Comment.Text = "Comment";
+            this.Comment.UseVisualStyleBackColor = true;
+            this.Comment.Visible = false;
+            this.Comment.Click += new System.EventHandler(this.Comment_Click);
+            // 
+            // soundToolStripMenuItem
+            // 
+            this.soundToolStripMenuItem.Name = "soundToolStripMenuItem";
+            this.soundToolStripMenuItem.Size = new System.Drawing.Size(324, 38);
+            this.soundToolStripMenuItem.Text = "Sound";
+            // 
+            // AutoPlay
+            // 
+            this.AutoPlay.Enabled = false;
+            this.AutoPlay.Location = new System.Drawing.Point(669, 100);
+            this.AutoPlay.Name = "AutoPlay";
+            this.AutoPlay.Size = new System.Drawing.Size(75, 23);
+            this.AutoPlay.TabIndex = 6;
+            this.AutoPlay.Text = "AutoPlay";
+            this.AutoPlay.UseVisualStyleBackColor = true;
+            this.AutoPlay.Visible = false;
+            // 
+            // Next
+            // 
+            this.Next.Enabled = false;
+            this.Next.Location = new System.Drawing.Point(669, 150);
+            this.Next.Name = "Next";
+            this.Next.Size = new System.Drawing.Size(75, 23);
+            this.Next.TabIndex = 7;
+            this.Next.Text = "Next";
+            this.Next.UseVisualStyleBackColor = true;
+            this.Next.Visible = false;
+            // 
+            // Previous
+            // 
+            this.Previous.Enabled = false;
+            this.Previous.Location = new System.Drawing.Point(669, 50);
+            this.Previous.Name = "Previous";
+            this.Previous.Size = new System.Drawing.Size(75, 23);
+            this.Previous.TabIndex = 8;
+            this.Previous.Text = "Previous";
+            this.Previous.UseVisualStyleBackColor = true;
+            this.Previous.Visible = false;
+            // 
             // DualPlayer
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.BurlyWood;
             this.ClientSize = new System.Drawing.Size(774, 529);
+            this.Controls.Add(this.Previous);
+            this.Controls.Add(this.Next);
+            this.Controls.Add(this.AutoPlay);
+            this.Controls.Add(this.Comment);
+            this.Controls.Add(this.CommentBox);
             this.Controls.Add(this.ReStart);
             this.Controls.Add(this.Attemptation);
             this.Controls.Add(this.Recover);
@@ -187,5 +263,11 @@
         private System.Windows.Forms.Button Recover;
         private System.Windows.Forms.Button Attemptation;
         private System.Windows.Forms.Button ReStart;
+        private System.Windows.Forms.TextBox CommentBox;
+        private System.Windows.Forms.Button Comment;
+        private System.Windows.Forms.ToolStripMenuItem soundToolStripMenuItem;
+        private System.Windows.Forms.Button AutoPlay;
+        private System.Windows.Forms.Button Next;
+        private System.Windows.Forms.Button Previous;
     }
 }

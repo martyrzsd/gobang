@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -30,6 +31,7 @@ namespace gobang
         public int NumbersOfGame { get; set; }
         public Point Vertex { get; set; }
         public int[] Score { get; set; }
+        public bool PlayBackStatus { get; set; }
         public bool Condition { get; set; }//判断是否继续游戏的条件
         public bool AttemptationStatus { get; set; }
         public int[] AttemptationIndexArray { get; set; }
@@ -54,11 +56,12 @@ namespace gobang
                     }
                 }
             }
-            if(AttemptationStatus)
+            if (AttemptationStatus)
             {
                 if (Condition)
                 {
-                    int ocassion = Dual[2].Control.Put(e.Location);
+                    int ocassion = Dual[NumbersOfGame].Control.Put(e.Location);
+                    Dual[NumbersOfGame].Paint.DrawchessWithNumber(Dual[NumbersOfGame]);
                     if (ocassion == 1)
                     {
                         NumbersOfGame++;
@@ -96,17 +99,11 @@ namespace gobang
             }
             else
             {
-                Dual[0].Paint.Drawboard();
-                Dual[0].Paint.Drawchess(Dual[0].Black);
-                Dual[1].Paint.Drawboard();
-                Dual[1].Paint.Drawchess(Dual[1].Black);
-                ////Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawboard();
-                ////Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[AttemptationIndexArray[NumbersOfGame]].Black);
-                //Dual.Add(Dual[AttemptationIndexArray[NumbersOfGame]].Control.Practice());
-                //AttemptationIndexArray[NumbersOfGame+1] = AttemptationIndexArray[NumbersOfGame];
-                //NumbersOfGame++;
-                //Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[NumbersOfGame].Black);
-                //Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[NumbersOfGame].White); 
+                Dual.Add(Dual[AttemptationIndexArray[NumbersOfGame]].Control.Practice());
+                AttemptationIndexArray[NumbersOfGame + 1] = AttemptationIndexArray[NumbersOfGame];
+                NumbersOfGame++;
+                Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[NumbersOfGame].Black);
+                Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[NumbersOfGame].White);
             }
         }//restart
 
@@ -119,7 +116,7 @@ namespace gobang
             }
             else
             {
-                Dual[NumbersOfGame].Control.Recover();
+                Dual[NumbersOfGame].Recover();
                 Condition = true;
             }
         }
@@ -130,17 +127,96 @@ namespace gobang
             {
                 AttemptationStatus = true;
                 Attemptation.Text = "END";
+                CommentBox.Visible = true;
+                CommentBox.Enabled = true;
+                Comment.Enabled = true;
+                Comment.Visible = true;
                 Dual.Add(Dual[NumbersOfGame].Control.Practice());
                 AttemptationIndexArray[NumbersOfGame + 1] = NumbersOfGame;
                 NumbersOfGame++;
             }
-            else
+            else if(AttemptationStatus)
             {
+                Recover.Visible = true;
+                Recover.Enabled = true;
                 AttemptationStatus = false;
                 Attemptation.Text = "Attempt";
-                
+                Dual.Add(Dual[AttemptationIndexArray[NumbersOfGame]]);
+                NumbersOfGame++;
+                Dual[NumbersOfGame].Paint.Drawboard();
+                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].Black);
+                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].White);
             }
         }
+
+        private void Comment_Click(object sender, EventArgs e)
+        {
+            Dual[NumbersOfGame].Control.MakeComments(CommentBox.Text);
+        }
+
+        private void playBackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public void PlayBack(Game GameToPlayBack)
+        {
+            PlayBackStatus = true;
+            Dual.Add(GameToPlayBack.Control.Practice());
+            NumbersOfGame++;
+            //AttemptationIndexArray[NumbersOfGame]
+            AttemptationStatus = true;
+            Recover.Visible = false;
+            Recover.Enabled = false;
+            ReStart.Visible = false;
+            ReStart.Enabled = false;
+            Next.Visible = true;
+            Next.Enabled = true;
+            Previous.Visible = true;
+            Previous.Enabled = true;
+            AutoPlay.Visible = true;
+            AutoPlay.Enabled = true;
+        }
+
+        private void playBackToolStripMenuItem_MouseEnter(object sender, EventArgs e)
+        {
+            playBackToolStripMenuItem.DropDownItems.Clear();
+            int i = 1;
+            int result = 2;
+            bool flag = true;
+            playBackToolStripMenuItem.DropDownItems.Add("Game1");
+            ToolStripMenuItem GameToPlayback;
+            while (i < Dual.Count)
+            {
+                if (AttemptationIndexArray[i] == 0)
+                {
+                    for (int j = 0; j < i - 1; j++)
+                    {
+                        if (Dual[j].Equals(Dual[i]))
+                        {
+                            flag = false;
+                        }
+                    }
+                    if (flag)
+                    {
+                        GameToPlayback = new ToolStripMenuItem();
+                        GameToPlayback.Tag = (result-1).ToString();
+                        GameToPlayback.Text= "Game" + result.ToString();
+                        playBackToolStripMenuItem.DropDownItems.Add(GameToPlayback);
+                        result++;
+                        GameToPlayback.Click += new EventHandler(GameToPlayback_Click);
+                    }
+                }
+                i++;
+            }
+        }
+
+        private void GameToPlayback_Click(object sender, EventArgs e)
+        {
+            PlayBack(Dual[Convert.ToInt32(((ToolStripMenuItem)sender).Tag)]);
+        }   
+
+
     }
 
 }
