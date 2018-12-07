@@ -381,8 +381,8 @@ namespace gobang
         //chess balck and chess white and point p. And the method Put will use this method.
         public void MakeComments(string commentsToMake)
         {
-            int i = 0;
-            if (GameToControl.Comments[i] == "")
+            /*int i = 0;
+            if (GameToControl.Comments[i] = "")
             {
                 i++;
             }
@@ -390,7 +390,8 @@ namespace gobang
             {
                 GameToControl.Comments[i] = commentsToMake;
                 GameToControl.CommentsStep[i] = GameToControl.CurrentStep;
-            }
+            }*/
+            GameToControl.Comments[GameToControl.CurrentStep] = commentsToMake;
         }
     }
 
@@ -847,10 +848,27 @@ namespace gobang
         }
         public void PreviousStep()
         {
+            /*
             CurrentPlayBackStep--;
             GameToPlayBack.Paint.Drawboard();
             GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
             GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
+    */
+            GameToPlayBack.Paint.Drawboard();
+            CurrentPlayBackStep--;
+            if (CurrentPlayBackStep % 2 == 0)
+            {
+
+                GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep + 1);
+                GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
+            }
+            else
+            {
+
+                GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep + 1);
+                GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
+            }
+            GameToPlayBack.Paint.DrawchessWithNumber(GameToPlayBack, CurrentPlayBackStep);
         }
         public void AutoPlay(int Lag)
         {
@@ -956,7 +974,7 @@ namespace gobang
             return result;
         }//use the distance to judge, need to run twice to check both white and black.
     }
-
+    [Serializable]
     public class Game
     {
         public Game(Point vertex, int _sizePerLine, Form form)
@@ -989,6 +1007,7 @@ namespace gobang
         public int[] CommentsStep { get; set; }
         public virtual void Recover() { }
     }//examples for a game
+    [Serializable]
     public class Attemptation : Game
     {
         public Attemptation(Point vertex, int sizePerLine, Form form, int Initial) : base(vertex, sizePerLine, form)
@@ -1000,6 +1019,7 @@ namespace gobang
             if (CurrentStep > InitialStep)
             {
                 Control.Recover();
+                Paint.DrawchessWithNumber(this);
             }
             else
             {

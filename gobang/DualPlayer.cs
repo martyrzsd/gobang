@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace gobang
 {
+
+
     public partial class DualPlayer : Form
     {
         public DualPlayer()
@@ -36,6 +40,33 @@ namespace gobang
         public bool Condition { get; set; }//判断是否继续游戏的条件
         public bool AttemptationStatus { get; set; }
         public int[] AttemptationIndexArray { get; set; }
+        [Serializable]
+        public class Everything
+        {
+            public Everything(int q,List<Game> w,int e,Game r, Point t, int[] y,bool u, bool i,bool o,int[] p)
+            {
+                SizePerLine = q;
+                Dual = w;
+                NumbersOfGame = e;
+                PlaybackGame = r;
+                Vertex = t;
+                Score = y;
+                PlayBackStatus = u;
+                Condition = i;
+                AttemptationStatus = o;
+                AttemptationIndexArray = p;
+            }
+            public int SizePerLine { get; set; }
+            public List<Game> Dual { get; set; }
+            public int NumbersOfGame { get; set; }
+            public Game PlaybackGame { get; set; }
+            public Point Vertex { get; set; }
+            public int[] Score { get; set; }
+            public bool PlayBackStatus { get; set; }
+            public bool Condition { get; set; }//判断是否继续游戏的条件
+            public bool AttemptationStatus { get; set; }
+            public int[] AttemptationIndexArray { get; set; }
+        }
 
         private void DualPlayer_MouseClick(object sender, MouseEventArgs e)
         {
@@ -152,7 +183,32 @@ namespace gobang
 
         private void Comment_Click(object sender, EventArgs e)
         {
-            Dual[NumbersOfGame].Control.MakeComments(CommentBox.Text);
+            if (!PlayBackStatus)
+            {
+                Dual[NumbersOfGame].Control.MakeComments(CommentBox.Text);
+                CommentBox.Text = "";
+                if (!PlayBackStatus)
+                {
+                    MessageBox.Show("Already save your notes to step " + (Dual[NumbersOfGame].CurrentStep -1).ToString() + " !");
+                }
+                else
+                {
+                    MessageBox.Show("Already save your notes to step " + (PlaybackGame.PlayBack.CurrentPlayBackStep -1).ToString() + " !");
+                }
+            }
+            if (PlayBackStatus)
+            {
+                PlaybackGame.Control.MakeComments(CommentBox.Text);
+                CommentBox.Text = "";
+                if (!PlayBackStatus)
+                {
+                    MessageBox.Show("Already save your notes to step " + (Dual[NumbersOfGame].CurrentStep - 1).ToString() + " !");
+                }
+                else
+                {
+                    MessageBox.Show("Already save your notes to step " + (PlaybackGame.PlayBack.CurrentPlayBackStep - 1).ToString() + " !");
+                }
+            }
         }
 
         private void playBackToolStripMenuItem_Click(object sender, EventArgs e)
@@ -167,6 +223,13 @@ namespace gobang
             Dual.Add(GameToPlayBack.Control.Practice());
             Dual[NumbersOfGame].Paint.Drawboard();
             NumbersOfGame++;
+            for (int i = 0; i < Dual.Count; i++)
+            {
+                if (Dual[i].Equals(GameToPlayBack))
+                {
+                    AttemptationIndexArray[NumbersOfGame] = i;
+                }
+            }
             //AttemptationIndexArray[NumbersOfGame]
             AttemptationStatus = true;
             Recover.Visible = false;
@@ -230,11 +293,82 @@ namespace gobang
             CommentBox.Text = PlaybackGame.Comments[PlaybackGame.PlayBack.CurrentPlayBackStep];
         }
 
+
+
         private void Next_Click(object sender, EventArgs e)
         {
             PlaybackGame.PlayBack.NextStep();
             //CommentBox.Text = PlaybackGame.Comments[];
+            CommentBox.Text = PlaybackGame.Comments[PlaybackGame.PlayBack.CurrentPlayBackStep];
+
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "GOBang(*.data)|*.data";
+            if (saveFileDialog1.ShowDialog()==DialogResult.OK)
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                if (File.Exists(saveFileDialog1.FileName))
+                {
+                    if (MessageBox.Show("Cover?", "warning", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    {
+                        FileStream fileStream = new FileStream(saveFileDialog1.FileName, FileMode.Create);
+                        Everything everything = new Everything(SizePerLine, Dual, NumbersOfGame, PlaybackGame, Vertex, Score, PlayBackStatus, Condition, AttemptationStatus, AttemptationIndexArray);
+                        binaryFormatter.Serialize(fileStream, everything);
+                        fileStream.Close();
+                    }
+                }
+                
+                else
+                {
+                    FileStream fileStream = new FileStream(saveFileDialog1.FileName, FileMode.Create);
+                    Everything everything = new Everything(SizePerLine, Dual, NumbersOfGame, PlaybackGame, Vertex, Score, PlayBackStatus, Condition, AttemptationStatus, AttemptationIndexArray);
+                    binaryFormatter.Serialize(fileStream, everything);
+                    fileStream.Close();
+                }
+                
+            }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "GOBang(*.data)|*.data";
+            if (openFileDialog1.ShowDialog()==DialogResult.OK)
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                if (File.Exists(openFileDialog1.FileName))
+                {
+                    try
+                    {
+                        FileStream fileStream = new FileStream(openFileDialog1.FileName, FileMode.Open);
+                        Everything everything = (Everything)binaryFormatter.Deserialize(fileStream);
+
+                        SizePerLine =everything.SizePerLine;
+                        Dual = everything.Dual;
+                        NumbersOfGame = everything.NumbersOfGame;
+                        PlaybackGame = everything.PlaybackGame;
+                        Vertex = everything.Vertex;
+                        Score = everything.Score;
+                        PlayBackStatus = everything.PlayBackStatus;
+                        Condition = everything.Condition;
+                        AttemptationStatus = everything.AttemptationStatus;
+                        AttemptationIndexArray = everything.AttemptationIndexArray;
+                        fileStream.Close();
+
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Not Correct Format!");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No such a file!");
+                }
+            }
         }
     }
 
 }
+
