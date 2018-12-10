@@ -87,6 +87,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -119,6 +120,27 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Welcome.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\图层 5素材cnn sccnn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\qp1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ButtonInGame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\my1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InGameButton2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Comment.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

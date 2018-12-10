@@ -21,8 +21,8 @@ namespace gobang
         {
             this.Show();
             InitializeComponent();
-            SizePerLine = 25;//later may get this size changable
-            Vertex = new Point(50, 50);
+            SizePerLine = 30;//later may get this size changable
+            Vertex = new Point(100, 180);
             Dual = new List<Game>() { new Game(Vertex, SizePerLine, this) };
             NumbersOfGame = 0;
             Score = new int[2] { 0, 0 };
@@ -125,9 +125,10 @@ namespace gobang
             if (!AttemptationStatus)
             {
                 NumbersOfGame++;
+                Condition = true;
                 Dual.Add(new Game(Vertex, SizePerLine, this));
                 Dual[NumbersOfGame].Paint.Drawboard();
-                Condition = true;
+                Invalidate();
             }
             else
             {
@@ -136,6 +137,7 @@ namespace gobang
                 NumbersOfGame++;
                 Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[NumbersOfGame].Black);
                 Dual[AttemptationIndexArray[NumbersOfGame]].Paint.Drawchess(Dual[NumbersOfGame].White);
+                Invalidate();
             }
         }//restart
 
@@ -145,11 +147,13 @@ namespace gobang
             {
                 Dual[NumbersOfGame].Control.Recover();
                 Condition = true;
+                Invalidate();
             }
             else
             {
                 Dual[NumbersOfGame].Recover();
                 Condition = true;
+                Invalidate();
             }
         }
 
@@ -166,6 +170,7 @@ namespace gobang
                 Dual.Add(Dual[NumbersOfGame].Control.Practice());
                 AttemptationIndexArray[NumbersOfGame + 1] = NumbersOfGame;
                 NumbersOfGame++;
+                Invalidate();
             }
             else if(AttemptationStatus)
             {
@@ -175,9 +180,10 @@ namespace gobang
                 Attemptation.Text = "Attempt";
                 Dual.Add(Dual[AttemptationIndexArray[NumbersOfGame]]);
                 NumbersOfGame++;
-                Dual[NumbersOfGame].Paint.Drawboard();
-                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].Black);
-                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].White);
+                Invalidate();
+                //Dual[NumbersOfGame].Paint.Drawboard();
+                //Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].Black);
+                //Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].White);
             }
         }
 
@@ -366,6 +372,28 @@ namespace gobang
                 {
                     MessageBox.Show("No such a file!");
                 }
+            }
+        }
+
+        private void DualPlayer_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DualPlayer_Paint(object sender, PaintEventArgs e)
+        {
+            if (!AttemptationStatus)
+            {
+                Dual[0].Paint.Drawboard();
+                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].Black);
+                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].White);
+            }
+            else
+            {
+                Dual[NumbersOfGame].Paint.Drawboard();
+                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].Black);
+                Dual[NumbersOfGame].Paint.Drawchess(Dual[NumbersOfGame].White);
+                Dual[NumbersOfGame].Paint.DrawchessWithNumber(Dual[NumbersOfGame]);
             }
         }
     }

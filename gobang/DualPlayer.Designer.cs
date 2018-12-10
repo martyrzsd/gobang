@@ -66,7 +66,7 @@
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(774, 40);
+            this.menuStrip1.Size = new System.Drawing.Size(1292, 40);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -161,84 +161,135 @@
             // 
             // Recover
             // 
-            this.Recover.Location = new System.Drawing.Point(550, 50);
+            this.Recover.BackColor = System.Drawing.Color.Transparent;
+            this.Recover.FlatAppearance.BorderSize = 0;
+            this.Recover.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Recover.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Recover.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Recover.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Recover.ForeColor = System.Drawing.Color.DimGray;
+            this.Recover.Location = new System.Drawing.Point(722, 106);
             this.Recover.Name = "Recover";
-            this.Recover.Size = new System.Drawing.Size(75, 23);
+            this.Recover.Size = new System.Drawing.Size(135, 106);
             this.Recover.TabIndex = 1;
             this.Recover.Text = "Recover";
-            this.Recover.UseVisualStyleBackColor = true;
+            this.Recover.UseVisualStyleBackColor = false;
             this.Recover.Click += new System.EventHandler(this.Recover_Click);
             // 
             // Attemptation
             // 
-            this.Attemptation.Location = new System.Drawing.Point(550, 100);
+            this.Attemptation.BackColor = System.Drawing.Color.Transparent;
+            this.Attemptation.FlatAppearance.BorderSize = 0;
+            this.Attemptation.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Attemptation.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Attemptation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Attemptation.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Attemptation.ForeColor = System.Drawing.Color.DimGray;
+            this.Attemptation.Location = new System.Drawing.Point(722, 240);
             this.Attemptation.Name = "Attemptation";
-            this.Attemptation.Size = new System.Drawing.Size(75, 23);
+            this.Attemptation.Size = new System.Drawing.Size(135, 110);
             this.Attemptation.TabIndex = 2;
             this.Attemptation.Text = "Attemptation";
-            this.Attemptation.UseVisualStyleBackColor = true;
+            this.Attemptation.UseVisualStyleBackColor = false;
             this.Attemptation.Click += new System.EventHandler(this.Attemptation_Click);
             // 
             // ReStart
             // 
-            this.ReStart.Location = new System.Drawing.Point(550, 150);
+            this.ReStart.BackColor = System.Drawing.Color.Transparent;
+            this.ReStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ReStart.FlatAppearance.BorderSize = 0;
+            this.ReStart.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.ReStart.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.ReStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ReStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReStart.ForeColor = System.Drawing.Color.DimGray;
+            this.ReStart.Location = new System.Drawing.Point(722, 386);
             this.ReStart.Name = "ReStart";
-            this.ReStart.Size = new System.Drawing.Size(75, 23);
+            this.ReStart.Size = new System.Drawing.Size(135, 105);
             this.ReStart.TabIndex = 3;
             this.ReStart.Text = "ReStart";
-            this.ReStart.UseVisualStyleBackColor = true;
+            this.ReStart.UseVisualStyleBackColor = false;
             this.ReStart.Click += new System.EventHandler(this.button1_Click);
             // 
             // CommentBox
             // 
+            this.CommentBox.BackColor = System.Drawing.Color.Black;
             this.CommentBox.Enabled = false;
-            this.CommentBox.Location = new System.Drawing.Point(550, 220);
+            this.CommentBox.ForeColor = System.Drawing.Color.White;
+            this.CommentBox.Location = new System.Drawing.Point(932, 222);
             this.CommentBox.Multiline = true;
             this.CommentBox.Name = "CommentBox";
-            this.CommentBox.Size = new System.Drawing.Size(194, 119);
+            this.CommentBox.Size = new System.Drawing.Size(211, 187);
             this.CommentBox.TabIndex = 4;
             this.CommentBox.Visible = false;
             // 
             // Comment
             // 
+            this.Comment.BackColor = System.Drawing.Color.Transparent;
+            this.Comment.BackgroundImage = global::gobang.Properties.Resources.Comment;
+            this.Comment.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Comment.Enabled = false;
-            this.Comment.Location = new System.Drawing.Point(550, 358);
+            this.Comment.FlatAppearance.BorderSize = 0;
+            this.Comment.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Comment.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Comment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Comment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Comment.ForeColor = System.Drawing.Color.DimGray;
+            this.Comment.Location = new System.Drawing.Point(932, 678);
             this.Comment.Name = "Comment";
-            this.Comment.Size = new System.Drawing.Size(75, 26);
+            this.Comment.Size = new System.Drawing.Size(211, 80);
             this.Comment.TabIndex = 5;
             this.Comment.Text = "Comment";
-            this.Comment.UseVisualStyleBackColor = true;
+            this.Comment.UseVisualStyleBackColor = false;
             this.Comment.Visible = false;
             this.Comment.Click += new System.EventHandler(this.Comment_Click);
             // 
             // Next
             // 
+            this.Next.BackColor = System.Drawing.Color.Transparent;
+            this.Next.BackgroundImage = global::gobang.Properties.Resources.InGameButton2;
+            this.Next.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Next.Enabled = false;
-            this.Next.Location = new System.Drawing.Point(669, 150);
+            this.Next.FlatAppearance.BorderSize = 0;
+            this.Next.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Next.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Next.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Next.ForeColor = System.Drawing.Color.DarkGray;
+            this.Next.Location = new System.Drawing.Point(1061, 501);
             this.Next.Name = "Next";
-            this.Next.Size = new System.Drawing.Size(75, 23);
+            this.Next.Size = new System.Drawing.Size(129, 118);
             this.Next.TabIndex = 7;
-            this.Next.Text = "Next";
-            this.Next.UseVisualStyleBackColor = true;
+            this.Next.Text = "    Next";
+            this.Next.UseVisualStyleBackColor = false;
             this.Next.Visible = false;
             this.Next.Click += new System.EventHandler(this.Next_Click);
             // 
             // Previous
             // 
+            this.Previous.BackColor = System.Drawing.Color.Transparent;
+            this.Previous.BackgroundImage = global::gobang.Properties.Resources.InGameButton2;
+            this.Previous.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Previous.Enabled = false;
-            this.Previous.Location = new System.Drawing.Point(669, 50);
+            this.Previous.FlatAppearance.BorderSize = 0;
+            this.Previous.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.Previous.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.Previous.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Previous.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Previous.ForeColor = System.Drawing.Color.DarkGray;
+            this.Previous.Location = new System.Drawing.Point(896, 501);
             this.Previous.Name = "Previous";
-            this.Previous.Size = new System.Drawing.Size(75, 23);
+            this.Previous.Size = new System.Drawing.Size(147, 118);
             this.Previous.TabIndex = 8;
             this.Previous.Text = "Previous";
-            this.Previous.UseVisualStyleBackColor = true;
+            this.Previous.UseVisualStyleBackColor = false;
             this.Previous.Visible = false;
             this.Previous.Click += new System.EventHandler(this.Previous_Click);
             // 
             // axWindowsMediaPlayer1
             // 
             this.axWindowsMediaPlayer1.Enabled = true;
-            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(583, 464);
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(1157, 718);
             this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
             this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
             this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(75, 23);
@@ -253,7 +304,9 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.BurlyWood;
-            this.ClientSize = new System.Drawing.Size(774, 529);
+            this.BackgroundImage = global::gobang.Properties.Resources.my1;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1292, 833);
             this.Controls.Add(this.axWindowsMediaPlayer1);
             this.Controls.Add(this.Previous);
             this.Controls.Add(this.Next);
@@ -263,10 +316,13 @@
             this.Controls.Add(this.Attemptation);
             this.Controls.Add(this.Recover);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DualPlayer";
             this.Text = "DualPlay";
+            this.Load += new System.EventHandler(this.DualPlayer_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.DualPlayer_Paint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DualPlayer_MouseClick);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

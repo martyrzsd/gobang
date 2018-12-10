@@ -348,6 +348,7 @@ namespace gobang
                     }
                 }
                 GameToControl.CurrentStep++;
+                //GameToControl.CurrentForm.Invalidate();
                 return 0;
             }
             else
@@ -381,8 +382,8 @@ namespace gobang
         //chess balck and chess white and point p. And the method Put will use this method.
         public void MakeComments(string commentsToMake)
         {
-            /*int i = 0;
-            if (GameToControl.Comments[i] = "")
+            int i = 0;
+            if (GameToControl.Comments[i] == "")
             {
                 i++;
             }
@@ -390,33 +391,28 @@ namespace gobang
             {
                 GameToControl.Comments[i] = commentsToMake;
                 GameToControl.CommentsStep[i] = GameToControl.CurrentStep;
-            }*/
-            GameToControl.Comments[GameToControl.CurrentStep] = commentsToMake;
+            }
         }
     }
 
-    public class AI
+    public class Counter
     {
-        public AI(Game game)
+        public Counter(int[] toCount)
         {
-            Ai = game.Black;
-            Player = game.White;
-            Judge = new int[9];
+            Judge = toCount;
         }
         public int[] Judge { get; set; }
-        public Chess Ai { get; set; }
-        public Chess Player { get; set; }
         public int Count(int[] judge)
         {
             int i = 1;
             int j = 1;
             int result = 0;
-            while (judge[4 + i] > 0)
+            while (judge[4 + i] >= 0)
             {
                 result++;
                 i++;
             }
-            while (judge[4 - i] > 0)
+            while (judge[4 - j] >= 0)
             {
                 result++;
                 j++;
@@ -433,15 +429,6 @@ namespace gobang
             live3,
             live2,
             die2
-        }
-        public int MyMaxScore()
-        {
-            return 1;
-        }
-
-        public int HisMaxScore()
-        {
-            return 1;
         }
         public Flag SingleDirection(int[] judge)
         {
@@ -484,24 +471,21 @@ namespace gobang
             int i = 0;
             int j = 0;
             bool[] result = new bool[2] { false, false };
-            if (Count(judge) == 4)
+            while (judge[4 - i] > 0)
             {
-                while (judge[4 - i] > 0)
-                {
-                    i++;
-                }
-                if (judge[4 - i] == 0)
-                {
-                    result[0] = true;
-                }
-                while (judge[4 + j] > 0)
-                {
-                    j++;
-                }
-                if (judge[4 + j] == 0)
-                {
-                    result[1] = true;
-                }
+                i++;
+            }
+            if (judge[4 - i] == 0)
+            {
+                result[0] = true;
+            }
+            while (judge[4 + j] > 0)
+            {
+                j++;
+            }
+            if (judge[4 + j] == 0)
+            {
+                result[1] = true;
             }
             return result[0] & result[1];
         }
@@ -546,6 +530,7 @@ namespace gobang
             {
                 result[1] = true;
             }
+
             while (judge[4 + j] > 0)
             {
                 j++;
@@ -593,28 +578,38 @@ namespace gobang
             else
                 return Flag.nothreat;
         }
-        /*      public Flag Find2(int[] judge)
-              {
-                  int i = 0;
-                  int j = 0;
-                  bool[] result = new bool[6] { false, false, false, false ,false,false};
-                  if (judge[5]>0|judge[3]>0)
-                  {
 
-                  }
-                  else
-                  {
-                      if (judge[3]<0|judge[5]<0)
-                      {
-                          return Flag.die2;
-                      }
-                      else
-                      {
+        public Flag Find2(int[] judge)
+        {
+            int i = 0;
+            int j = 0;
+            int[] result = new int[6];
 
-                      }
-                  }
 
-              }*/
+            if (
+                (judge[3] < 0 &
+                 (judge[6] < 0 |
+                 judge[7] > 0 |
+                 judge[8] < 0))
+                 |
+                 (judge[5]<0 &
+                 (
+                 judge[2]<0|judge[1]<0|judge[0]<0
+                 )) 
+                 |
+                 (judge[2]<0&
+                 (judge[6]<0|judge[7]<0))
+                )
+            {
+                return Flag.die2;
+            }
+            else
+            { return Flag.live2; }
+        }
+    }
+    public class AI
+    {
+
     }
     public class Paint
     {
@@ -627,8 +622,9 @@ namespace gobang
         public Graphics g { get; set; }
         public void Drawboard()
         {
-            SolidBrush covering = new SolidBrush(Color.BurlyWood);
-            g.FillRectangle(covering, GameToPaint.Board.XBoundary[0] - GameToPaint.SizePerLine, GameToPaint.Board.YBoundary[0] - GameToPaint.SizePerLine, GameToPaint.SizePerLine * 16, GameToPaint.SizePerLine * 16);
+            //SolidBrush covering = new SolidBrush();
+            //g.FillRectangle(covering, GameToPaint.Board.XBoundary[0] - GameToPaint.SizePerLine, GameToPaint.Board.YBoundary[0] - GameToPaint.SizePerLine, GameToPaint.SizePerLine * 16, GameToPaint.SizePerLine * 16);
+
             Pen Lines = new Pen(Color.Black);
             foreach (int item in GameToPaint.Board.XBoundary)
             {
@@ -638,8 +634,9 @@ namespace gobang
             {
                 g.DrawLine(Lines, GameToPaint.Board.XBoundary[0], item, GameToPaint.Board.XBoundary[15], item);
             }
-            DrawEdgeIndex();
+            //DrawEdgeIndex();
             DrawKeyPoint();
+           // GameToPaint.CurrentForm.Invalidate();
         }//not finished
         public void Drawchess(Chess chess)
         {
@@ -663,7 +660,7 @@ namespace gobang
                     }
                 }
             }
-
+            //GameToPaint.CurrentForm.Invalidate();
         }//notfinished
         public void Drawchess(Chess chess, int EndNumbers)
         {
@@ -687,17 +684,27 @@ namespace gobang
                     }
                 }
             }//playback used
-
+            //GameToPaint.CurrentForm.Invalidate();
         }
+
         public void DrawKeyPoint()
         {
-
+            g.FillEllipse(new SolidBrush(Color.Black), GameToPaint.Board.XBoundary[3]-GameToPaint.SizePerLine/6, GameToPaint.Board.YBoundary[12] - GameToPaint.SizePerLine / 6, GameToPaint.SizePerLine / 3, GameToPaint.SizePerLine / 3);
+            g.FillEllipse(new SolidBrush(Color.Black), GameToPaint.Board.XBoundary[3] - GameToPaint.SizePerLine / 6, GameToPaint.Board.YBoundary[3] - GameToPaint.SizePerLine / 6, GameToPaint.SizePerLine / 3, GameToPaint.SizePerLine / 3);
+            g.FillEllipse(new SolidBrush(Color.Black), GameToPaint.Board.XBoundary[12] - GameToPaint.SizePerLine / 6, GameToPaint.Board.YBoundary[3] - GameToPaint.SizePerLine / 6, GameToPaint.SizePerLine / 3, GameToPaint.SizePerLine / 3);
+            g.FillEllipse(new SolidBrush(Color.Black), GameToPaint.Board.XBoundary[12] - GameToPaint.SizePerLine / 6, GameToPaint.Board.YBoundary[12] - GameToPaint.SizePerLine / 6, GameToPaint.SizePerLine / 3, GameToPaint.SizePerLine / 3);
+            g.FillEllipse(new SolidBrush(Color.Black), GameToPaint.Board.XBoundary[7] - GameToPaint.SizePerLine / 6, GameToPaint.Board.YBoundary[7] - GameToPaint.SizePerLine / 6, GameToPaint.SizePerLine / 3, GameToPaint.SizePerLine / 3);
         }
 
         public void DrawEdgeIndex()
         {
-
+            for (int i = 0; i < 15; i++)
+            {
+               // g.DrawString((i + 1).ToString(), new Font("Microsoft Sans Serif", 12), new SolidBrush(Color.Gray), new Point(GameToPaint.Board.XBoundary[i], GameToPaint.Vertex.Y - GameToPaint.SizePerLine));
+                //g.DrawString((i + 1).ToString(), new Font("Microsoft Sans Serif", 12), new SolidBrush(Color.Gray), new Point(GameToPaint.Vertex.X - GameToPaint.SizePerLine, GameToPaint.Board.YBoundary[i]));
+            }
         }
+
         public void DrawNumber(int number, SolidBrush color, Point p)
         {
             g.DrawString(number.ToString(), new Font("Microsoft Sans Serif", 12), color, p);
@@ -773,7 +780,7 @@ namespace gobang
 
                                 DrawNumber(game.White.Matrix[i, j] * 2 + w - game.InitialStep, new SolidBrush(Color.Black), new Point(game.White.ChessLocation[game.White.Matrix[i, j]].X - game.White.SizePerLine / 2, game.White.ChessLocation[game.White.Matrix[i, j]].Y - game.White.SizePerLine / 2));
                             }
-                            }
+                        }
                     }
                 }
             }
@@ -802,7 +809,7 @@ namespace gobang
 
                                 DrawNumber(game.White.Matrix[i, j] * 2 - game.InitialStep + w, new SolidBrush(Color.Black), new Point(game.White.ChessLocation[game.White.Matrix[i, j]].X - game.White.SizePerLine / 2, game.White.ChessLocation[game.White.Matrix[i, j]].Y - game.White.SizePerLine / 2));
                             }
-                            }
+                        }
                     }
                 }
             }
@@ -825,40 +832,6 @@ namespace gobang
             if (CurrentPlayBackStep % 2 == 0)
             {
 
-                GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep+1);
-                GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
-            }
-            else
-            {
-
-                GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep+1);
-                GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
-            }
-                GameToPlayBack.Paint.DrawchessWithNumber(GameToPlayBack,CurrentPlayBackStep);
-            CurrentPlayBackStep++;
-        }
-        public void NextStep(bool AutoPlayStatus, int Lag)
-        {
-            if (AutoPlayStatus)
-            {
-                NextStep();
-                Thread.Sleep(100* Lag);
-                NextStep(AutoPlayStatus, Lag);
-            }
-        }
-        public void PreviousStep()
-        {
-            /*
-            CurrentPlayBackStep--;
-            GameToPlayBack.Paint.Drawboard();
-            GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
-            GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
-    */
-            GameToPlayBack.Paint.Drawboard();
-            CurrentPlayBackStep--;
-            if (CurrentPlayBackStep % 2 == 0)
-            {
-
                 GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep + 1);
                 GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
             }
@@ -869,6 +842,23 @@ namespace gobang
                 GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
             }
             GameToPlayBack.Paint.DrawchessWithNumber(GameToPlayBack, CurrentPlayBackStep);
+            CurrentPlayBackStep++;
+        }
+        public void NextStep(bool AutoPlayStatus, int Lag)
+        {
+            if (AutoPlayStatus)
+            {
+                NextStep();
+                Thread.Sleep(100 * Lag);
+                NextStep(AutoPlayStatus, Lag);
+            }
+        }
+        public void PreviousStep()
+        {
+            CurrentPlayBackStep--;
+            GameToPlayBack.Paint.Drawboard();
+            GameToPlayBack.Paint.Drawchess(GameToPlayBack.Black, CurrentPlayBackStep);
+            GameToPlayBack.Paint.Drawchess(GameToPlayBack.White, CurrentPlayBackStep);
         }
         public void AutoPlay(int Lag)
         {
@@ -974,7 +964,7 @@ namespace gobang
             return result;
         }//use the distance to judge, need to run twice to check both white and black.
     }
-    [Serializable]
+
     public class Game
     {
         public Game(Point vertex, int _sizePerLine, Form form)
@@ -991,6 +981,7 @@ namespace gobang
             this.Paint.Drawboard();
             Comments = new string[180];
             CommentsStep = new int[180];
+            //CurrentForm.Invalidate();
         }//one game shall have a black white chess and a chessboard, as well as two controller for logic and painting.
         public Form CurrentForm { get; set; }
         public PlayBack PlayBack { get; set; }
@@ -1007,7 +998,6 @@ namespace gobang
         public int[] CommentsStep { get; set; }
         public virtual void Recover() { }
     }//examples for a game
-    [Serializable]
     public class Attemptation : Game
     {
         public Attemptation(Point vertex, int sizePerLine, Form form, int Initial) : base(vertex, sizePerLine, form)
@@ -1019,7 +1009,6 @@ namespace gobang
             if (CurrentStep > InitialStep)
             {
                 Control.Recover();
-                Paint.DrawchessWithNumber(this);
             }
             else
             {
